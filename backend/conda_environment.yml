@@ -1,0 +1,14 @@
+# conda environment setup with:
+  # conda env create -f conda_environment.yml
+  # conda activate pdfwebapp
+# if environment already exists then:
+  # conda activate pdfwebapp
+  # conda env update --file conda_environment.yml --prune
+
+name: pdfwebapp
+dependencies:
+  - python=3.8
+  - anaconda
+  - pip
+  - pip:
+    - -r requirements.txt

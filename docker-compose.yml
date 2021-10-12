@@ -1,0 +1,25 @@
+version: '3'
+services:
+    # frontend:
+    #     restart: always
+    #     build: ./frontend
+    #     volumes:
+    #         - ./frontend/mediaq/build:/app/build
+    #         - ./frontend/mediaq/src:/app/src
+    #         - ./frontend/mediaq/public:/app/public
+    #     restart: always
+    backend:
+        build: ./backend
+        ports:
+            - "5000:80"
+        volumes:
+            # - ./frontend/mediaq/build:/build
+            # copy backend files into /app/ directory (end result /app/app/main.py) 
+            # more importantly will replace the default helloworld app at /app/uswsgi.ini which is the uswsgi that is automatically called on startup and is how our backend starts
+            - ./backend:/app
+    # database:
+    #     build: ./database
+    #     ports:
+    #         - "6379:6379"
+    #     volumes:
+    #         - ./database/redis_data:/data
