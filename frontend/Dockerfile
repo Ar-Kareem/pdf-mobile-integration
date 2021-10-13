@@ -19,7 +19,7 @@ RUN npm install
 EXPOSE 4200
 
 # tell frontend server (proxy.conf.js) where to find backend server
-ENV FRONTEND_TARGET http://localhost:80
+ENV FRONTEND_TARGET http://backend:80
 
 # start the application
 CMD npm start
