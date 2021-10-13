@@ -7,6 +7,9 @@ Open cmd and cd into the project directory.
 
 Run `docker compose up --build`.
 
+If you run the above command too many times, make sure to run `docker image ls` to see how many images you have.
+If you want to prune images then run `docker image prune`
+
 Goto the web browser and access localhost:5000.
 
 If you want to rebuild the build folder for react run:

@@ -17,5 +17,8 @@ COPY . /app/backend
 
 # point to our uswsgi.ini
 ENV UWSGI_INI /app/backend/uwsgi.ini
+ENV LISTEN_PORT 80
+EXPOSE 80
+
 # set working dir correctly because uwsgi.ini is looking for ./app/main.py
 WORKDIR /app/backend
