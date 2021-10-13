@@ -1,10 +1,10 @@
 const PROXY_CONFIG = {
     "/": {
-      "target": process.env.FRONTEND_TARGET || "http://localhost:8100",
+      "target": process.env.FRONTEND_TARGET || "http://localhost:5000",
       "secure": false
     }
 }
 
-console.log('STARTING FRONTEND WITH TARGET URL: ' + PROXY_CONFIG['/'].target)
+console.log('STARTING FRONTEND WITH BACKEND TARGET URL: ' + PROXY_CONFIG['/'].target)
 
 module.exports = PROXY_CONFIG;

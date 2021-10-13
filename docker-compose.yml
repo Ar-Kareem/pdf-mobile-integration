@@ -4,7 +4,7 @@ services:
         # restart: always
         build: ./frontend
         ports:
-            - "4200:4200"
+            - "4201:4200"
     #     volumes:
     #         - ./frontend/mediaq/build:/app/build
     #         - ./frontend/mediaq/src:/app/src
@@ -13,7 +13,7 @@ services:
     backend:
         build: ./backend
         ports:
-            - "5000:80"
+            - "5001:80"
         volumes:
             - ./backend:/app/backend
         image: arkareem/pdf-mobile-integration-backend

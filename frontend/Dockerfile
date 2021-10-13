@@ -13,6 +13,8 @@ COPY ./app/ /app/frontend/
 RUN npm install
 
 
+
+
 # expose the frontend port to outside the image
 EXPOSE 4200
 
