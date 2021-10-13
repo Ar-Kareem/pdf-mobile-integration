@@ -1,3 +1,4 @@
+# if you want to start backend outside of docker for some reason, below will setup conda environment
 # conda environment setup with:
   # conda env create -f conda_environment.yml
   # conda activate pdfwebapp
