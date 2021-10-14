@@ -1,4 +1,8 @@
 version: '3'
+
+volumes:
+    exclude_node_modules:
+
 services:
     frontend:
         build: 
@@ -7,10 +11,9 @@ services:
                 APP_ENV: dev  # dev or prod
         ports:
             - "4201:4200"
-    #     volumes:
-    #         - ./frontend/mediaq/build:/app/build
-    #         - ./frontend/mediaq/src:/app/src
-    #         - ./frontend/mediaq/public:/app/public
+        volumes:
+            - ./frontend/app/:/app/frontend/
+            - exclude_node_modules:/app/frontend/node_modules/
     #     restart: always
     backend:
         build: ./backend

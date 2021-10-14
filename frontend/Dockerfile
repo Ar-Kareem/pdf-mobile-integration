@@ -13,16 +13,12 @@ FROM node:14 as base
     COPY ./app/package*.json /app/frontend/
     # Install any needed packages specified in package.json
     RUN npm install
-    # After installing, Copy src to image
-    COPY ./app/ /app/frontend/
 
 
 # development mode ends here by just starting npm server
 FROM base as dev-final
     # Set the working directory to /app
     WORKDIR /app/frontend/
-    # Copy image from base
-    COPY --from=base /app/frontend/ /app/frontend/
     # expose the frontend port to outside the image
     EXPOSE 4200
     # tell frontend server (proxy.conf.js which npm start takes) where to find backend server
@@ -36,8 +32,8 @@ FROM base as prod-build
     RUN echo "running prod-build..."
     # Set the working directory to /app
     WORKDIR /app/frontend/
-    # Copy image from base
-    COPY --from=base /app/frontend/ /app/frontend/
+    # After installing, Copy src to image
+    COPY ./app/ /app/frontend/
     # build the application
     RUN npm run build -- --prod
 
