@@ -1,5 +1,11 @@
 # syntax=docker/dockerfile:1
 
+
+# Defining environment
+ARG APP_ENV=dev
+
+
+
 # use https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/ as a parent image. 
 # Documentation: https://github.com/tiangolo/uwsgi-nginx-flask-docker
 FROM tiangolo/uwsgi-nginx-flask:python3.8
@@ -17,8 +23,9 @@ COPY . /app/backend
 
 # point to our uswsgi.ini
 ENV UWSGI_INI /app/backend/uwsgi.ini
-ENV LISTEN_PORT 80
-EXPOSE 80
+ENV UWSGI_INI /app/backend/uwsgi-watch.ini
+ENV LISTEN_PORT 8080
+EXPOSE 8080
 
 # set working dir correctly because uwsgi.ini is looking for ./app/main.py
 WORKDIR /app/backend

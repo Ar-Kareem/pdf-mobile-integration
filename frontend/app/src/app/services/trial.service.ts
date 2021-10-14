@@ -16,10 +16,11 @@ const httpOptions = {
 
 
 
-const BASE_API = '/'
+const BASE_API = '/api/'
 
 const TRIAL_API = BASE_API + ''
 const GET_CONFIG_API = TRIAL_API + 'TESTT'
+const GET_CONFIG_API_API = TRIAL_API + ''
 
 
 
@@ -30,6 +31,14 @@ export class TrialService {
   getConfig() {
     console.log('URL SENT');
     return this.http.get<any>(GET_CONFIG_API, httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getConfigApi() {
+    console.log('URL SENT');
+    return this.http.get<any>(GET_CONFIG_API_API, httpOptions)
     .pipe(
       catchError(this.handleError)
     );

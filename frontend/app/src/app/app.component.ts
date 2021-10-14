@@ -13,5 +13,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.trialService.getConfig().subscribe(x=> console.log(x))
+    this.trialService.getConfigApi().subscribe(x=> console.log(x))
   }
 }

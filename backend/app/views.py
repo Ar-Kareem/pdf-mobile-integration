@@ -1,9 +1,9 @@
 from .mainController import app
 
-@app.route('/')
+@app.route('/api/')
 def home():
-   return "hello world! test 6"
+   return "hello world! test 9"
 
-@app.route('/TESTT')
+@app.route('/api/TESTT')
 def home2():
    return "hello world! TESTT"
