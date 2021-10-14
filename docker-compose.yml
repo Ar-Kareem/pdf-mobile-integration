@@ -1,26 +1,18 @@
 version: '3'
 
-volumes:
-    exclude_node_modules:
-
 services:
     frontend:
         build: 
             context: ./frontend
             args: 
-                APP_ENV: dev  # dev or prod
+                APP_ENV: prod  # dev or prod
         ports:
             - "4201:4200"
-        volumes:
-            - ./frontend/app/:/app/frontend/
-            - exclude_node_modules:/app/frontend/node_modules/
     #     restart: always
     backend:
         build: ./backend
         ports:
             - "5001:8080"
-        volumes:
-            - ./backend:/app/backend
         image: arkareem/pdf-mobile-integration-backend
     # database:
     #     build: ./database
