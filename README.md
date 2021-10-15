@@ -51,7 +51,7 @@ Then view pushed images:
 
 Or with a single command that will also take care of downloading the needed `.yml` files 
 
-        wget -O docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml && wget -O docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && docker-compose -f docker-compose-images.yml pull && docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
+        wget -O docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml && wget -O docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && wget -O docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && docker-compose -f docker-compose-images.yml pull && docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
 
 (the above command can be run in an empty directory and will take care of all needed components to start the production server [except for needing docker installed of course])
 
