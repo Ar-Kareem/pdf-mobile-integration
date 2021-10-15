@@ -22,15 +22,15 @@ Then Goto the web browser and access localhost:4201
 
 - build images in prod mode: 
 
-        docker-compose -f docker-compose-build.yml -f docker-compose-prod.yml -f docker-compose-images.yml build
+      docker-compose -f docker-compose-build.yml -f docker-compose-prod.yml -f docker-compose-images.yml build
 
 - Login: 
         
-        docker login
+      docker login
 
 - Push the built images to docker-hub 
 
-        docker-compose -f docker-compose-build.yml -f docker-compose-images.yml push
+      docker-compose -f docker-compose-build.yml -f docker-compose-images.yml push
 
 Then view pushed images:
 
@@ -42,27 +42,27 @@ Then view pushed images:
 ## Start production from image (no clone needed)
 - Get the latest docker compose yml files
         
-        curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml
-        curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml
-        curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml
+      curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml
+      curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml
+      curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml
 
 - Pull the images from the cloud: 
         
-        docker-compose -f docker-compose-images.yml pull
+      docker-compose -f docker-compose-images.yml pull
 
 - Finally, Run the images and open the ports (without watching for changes): 
 
-        docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml up
+      docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml up
 
 - Or, Run the images and open the ports while watching for changes:
 
-        docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
+      docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
 
-Or with a single command that will also take care of downloading the needed `.yml` files 
+- Or with a single command that will also take care of all the above 
 
-        curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && docker-compose -f docker-compose-images.yml pull && docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
+      curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && docker-compose -f docker-compose-images.yml pull && docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
 
-(the above command can be run in an empty directory and will take care of all needed components to start the production server [except for needing docker installed of course])
+(the above command can be run in an empty directory in both windows or linux and will take care of all needed components to start the production server [except for needing docker installed of course])
 
 Afterwards Goto the web browser and access {SERVER_URL}:4201
 
