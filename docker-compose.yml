@@ -2,21 +2,10 @@ version: '3'
 
 services:
     frontend:
-        build: 
-            context: ./frontend
-            args: 
-                APP_ENV: prod  # dev or prod
+        build: ./frontend
         ports:
             - "4201:4200"
-    #     restart: always
     backend:
         build: ./backend
         ports:
             - "5001:8080"
-        image: arkareem/pdf-mobile-integration-backend
-    # database:
-    #     build: ./database
-    #     ports:
-    #         - "6379:6379"
-    #     volumes:
-    #         - ./database/redis_data:/data

@@ -6,17 +6,11 @@ volumes:
 services:
     frontend:
         build: 
-            context: ./frontend
             args: 
                 APP_ENV: dev  # dev or prod
-        ports:
-            - "4201:4200"
         volumes:
             - ./frontend/app/:/app/frontend/
             - exclude_node_modules:/app/frontend/node_modules/
     backend:
-        build: ./backend
-        ports:
-            - "5001:8080"
         volumes:
             - ./backend:/app/backend

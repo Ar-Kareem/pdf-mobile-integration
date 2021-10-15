@@ -2,7 +2,7 @@
 
 
 # Defining environment
-ARG APP_ENV=dev
+ARG APP_ENV=null
 
 
 # set base for both development and production

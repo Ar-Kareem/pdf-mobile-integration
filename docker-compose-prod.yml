@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+    frontend:
+        build: 
+            args: 
+                APP_ENV: prod  # dev or prod
+        image: arkareem/pdf-mobile-integration-frontend
+    backend:
+        image: arkareem/pdf-mobile-integration-backend
