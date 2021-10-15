@@ -5,6 +5,5 @@ services:
         build: 
             args: 
                 APP_ENV: prod  # dev or prod
-        image: arkareem/pdf-mobile-integration-frontend
     backend:
-        image: arkareem/pdf-mobile-integration-backend
+        # TODO should disable watch in backend for prod mode
