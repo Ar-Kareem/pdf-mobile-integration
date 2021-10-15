@@ -50,11 +50,7 @@ Then view pushed images:
         
       docker-compose -f docker-compose-images.yml pull
 
-- Finally, Run the images and open the ports (without watching for changes): 
-
-      docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml up
-
-- Or, Run the images and open the ports while watching for changes:
+- Finally, Open the ports, run the images, and continuously watch for changes:
 
       docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
 
@@ -62,9 +58,13 @@ Then view pushed images:
 
       curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && docker-compose -f docker-compose-images.yml pull && docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
 
-(the above command can be run in an empty directory in both windows or linux and will take care of all needed components to start the production server [except for needing docker installed of course])
+the above command can be run in an empty directory in erither linux or windows<sup>[1]</sup> and will take care of all needed components to start the production server<sup>[2]</sup>
 
-Afterwards Goto the web browser and access {SERVER_URL}:4201
+[1] Only works in CMD for windows not Powershell, because powershell does not support `&&`
+
+[2] all needed components except for needing docker installed of course
+
+To see the webapp in action, go to the web browser and access {SERVER_URL}:4201
 
 
 # View and Prune local images
