@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+    frontend:
+        image: arkareem/pdf-mobile-integration-frontend:arm7
+    backend:
+        image: arkareem/pdf-mobile-integration-backend:arm7

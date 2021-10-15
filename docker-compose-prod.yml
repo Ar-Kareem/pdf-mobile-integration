@@ -5,5 +5,3 @@ services:
         build: 
             args: 
                 APP_ENV: prod  # dev or prod
-    backend:
-        # TODO should disable watch in backend for prod mode
