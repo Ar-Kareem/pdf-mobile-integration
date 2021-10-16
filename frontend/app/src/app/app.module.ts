@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TrialService } from './services/trial.service';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -16,7 +16,7 @@ import { TrialService } from './services/trial.service';
     AppRoutingModule
   ],
   providers: [
-    TrialService,
+    AuthService,
   ],
   bootstrap: [AppComponent]
 })

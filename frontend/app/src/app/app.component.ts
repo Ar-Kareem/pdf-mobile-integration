@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TrialService } from './services/trial.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +8,18 @@ import { TrialService } from './services/trial.service';
 })
 export class AppComponent implements OnInit {
   title = 'pdf-mobile-integration';
+  auth_return: string | undefined;
 
-  constructor(private trialService: TrialService) { }
+  constructor(
+    private authService: AuthService,
+  ) { }
 
   ngOnInit() {
-    this.trialService.getConfig().subscribe(x=> console.log(x))
-    this.trialService.getConfigApi().subscribe(x=> console.log(x))
+    this.authService.auth().subscribe(x => {
+      console.log(x)
+      if (!!x) {
+        this.auth_return = x.resp
+      }
+    })
   }
 }

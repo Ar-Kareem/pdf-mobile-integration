@@ -7,44 +7,28 @@ import { catchError, retry } from 'rxjs/operators';
 
 import { HttpHeaders } from '@angular/common/http';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-    Authorization: 'my-auth-token'
-  })
-};
+export abstract class BaseService {
+
+  // base api
+  protected readonly BASE_API = '/api/'
+
+  // controller api's
+  protected readonly TRIAL_API = this.BASE_API + 'trial/'
+  protected readonly AUTH_API = this.BASE_API + 'auth/'
 
 
-
-const BASE_API = '/api/'
-
-const TRIAL_API = BASE_API + ''
-const GET_CONFIG_API = TRIAL_API + 'TESTT'
-const GET_CONFIG_API_API = TRIAL_API + ''
+  // child api implements this
+  protected readonly abstract API: {[api: string]: string};
 
 
+  protected readonly httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json'
+    })
+  };
 
-@Injectable()
-export class TrialService {
-  constructor(private http: HttpClient) { }
 
-  getConfig() {
-    console.log('URL SENT');
-    return this.http.get<any>(GET_CONFIG_API, httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  getConfigApi() {
-    console.log('URL SENT');
-    return this.http.get<any>(GET_CONFIG_API_API, httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  private handleError(error: HttpErrorResponse) {
+  protected handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);
