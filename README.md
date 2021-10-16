@@ -86,7 +86,7 @@ If you want to prune images then run `docker image prune`
 
 ## To BUILD and PUSH:
 
-      docker buildx bake -f docker-compose-build.yml -f docker-compose-build-arm7.yml -f docker-compose-images-arm7.yml --set *.platform=linux/arm/v7 --set backend.tags=arkareem/pdf-mobile-integration-backend:arm7 --set frontend.tags=arkareem/pdf-mobile-integration-frontend:arm7 --push
+      docker buildx bake -f docker-compose-build.yml -f docker-compose-prod-arm7.yml -f docker-compose-images-arm7.yml --set *.platform=linux/arm/v7 --set backend.tags=arkareem/pdf-mobile-integration-backend:arm7 --set frontend.tags=arkareem/pdf-mobile-integration-frontend:arm7 --push
 
 ## To PUSH:
 
