@@ -56,7 +56,7 @@ Then view pushed images:
 
 ## Start production from image (no clone needed)
 
-These steps are used to run the web application on any machine with the prerequisite of the machine having `docker/docker-compose` and the user has access to run docker commands.
+These steps are used to run the web application on any machine with the prerequisite of the machine having `docker/docker-compose` ([get docker](https://docs.docker.com/get-docker/) / [get docker compose](https://docs.docker.com/compose/install/)) and the user has access to run docker commands.
 
 - Get the sample secrets file then follow the instructions inside to setup any required secret environment variables
 
