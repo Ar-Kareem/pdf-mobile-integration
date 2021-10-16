@@ -7,14 +7,14 @@ Below are the different actions that can be performed in docker compose, the one
 
 ## To start development from source (must clone)
 
-    docker-compose -f docker-compose-build.yml -f docker-compose-ports.yml -f docker-compose-dev.yml up --build
+    docker-compose -f docker-compose-build.yml -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-dev.yml up --build
     
 Then Goto the web browser and access localhost:4201
 
 
 ## Start production from source (must clone)
 
-    docker-compose -f docker-compose-build.yml -f docker-compose-ports.yml -f docker-compose-prod.yml up --build
+    docker-compose -f docker-compose-build.yml -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-prod.yml up --build
 
 Then Goto the web browser and access localhost:4201
 
@@ -44,10 +44,13 @@ Then view pushed images:
 
 
 ## Start production from image (no clone needed)
+- Get the sample secrets file then follow the instructions inside to setup any required secret environment variables
+      curl -o .backend.env https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/.backend.env
 - Get the latest docker compose yml files
         
       curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml
       curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml
+      curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml
       curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml
 
 - Pull the images from the cloud: 
@@ -56,11 +59,11 @@ Then view pushed images:
 
 - Finally, Open the ports, run the images, and continuously watch for changes:
 
-      docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
+      docker-compose -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
 
 - Or with a single command that will also take care of all the above 
 
-      curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-images.yml pull && sudo docker-compose -f docker-compose-ports.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
+      curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-images.yml pull && sudo docker-compose -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
 
 the above command can be run in an empty directory in erither linux or windows<sup>[1]</sup> and will take care of all needed components to start the production server<sup>[2]</sup>
 
@@ -86,4 +89,4 @@ PUSH:
 docker-compose -f docker-compose-build.yml -f docker-compose-arm7.yml push
 
 RUN:
-curl -o docker-compose-arm7.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-arm7.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-arm7.yml pull && sudo docker-compose -f docker-compose-ports.yml -f docker-compose-arm7.yml -f docker-compose-watchtower.yml up
+curl -o docker-compose-arm7.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-arm7.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-arm7.yml pull && sudo docker-compose -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-arm7.yml -f docker-compose-watchtower.yml up
