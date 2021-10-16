@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+    frontend:
+        build: 
+            args: 
+                APP_ENV: prod  # dev or prod
+    backend:
+        build:
+            args:
+                BUILD_PLATFORM: base-arm7  # base or base-arm7

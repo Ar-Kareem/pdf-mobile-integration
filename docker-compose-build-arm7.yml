@@ -1,7 +1,0 @@
-version: '3'
-
-services:
-    backend:
-        build:
-            args:
-                BUILD_PLATFORM: base-arm7
