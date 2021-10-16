@@ -7,18 +7,29 @@ Below are the different actions that can be performed in docker compose, the one
 
 ## To start development from source (must clone)
 
-    docker-compose -f docker-compose-build.yml -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-dev.yml up --build
-    
-Then Goto the web browser and access localhost:4201
+If you intend to implement any changes to the source code then you should start the container in development mode using the below command.
 
+    docker-compose -f docker-compose-build.yml -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-dev.yml up --build
+
+Then Goto the web browser and access `localhost:4201`
+
+In development mode, any changes to the frontend code will automatically be detected and updated (because in development mode, the src is mounted to the container as a volume and the frontend server is running with npm which is polling file changes several times a second). The backend also has it's src mounted as a volume and is running the server using uwsgi-nginx and it will hot reload the backend if the file uwsgi-watch.ini is touched.
 
 ## Start production from source (must clone)
 
+This is only needed if you want to make sure that the production build is running as intended.
+
     docker-compose -f docker-compose-build.yml -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-prod.yml up --build
 
-Then Goto the web browser and access localhost:4201
+Then Goto the web browser and access `localhost:4201`
+
+In production mode, no changes to the source code will be reflected since no volumes are mounted. Additionally, neither the frontend nor the backend is watching for changes <sup>[1]</sup>. The frontend is also no longer running on the npm server, instead it is built in production mode and served in nginx as it is production level unlike the npm server.
+
+[1] Currently the backend is still watching for uwsgi-watch.ini to be changed but that is to be fixed.
 
 ## Build production from source and push image to docker-hub (must clone)
+
+This is to be used to build and push any changes to docker-hub. Production servers are watching for changes to images in docker-hub with certain tags and will be automatically updated using [Watchtower](https://github.com/containrrr/watchtower/).
 
 - Login: 
         
@@ -44,6 +55,9 @@ Then view pushed images:
 
 
 ## Start production from image (no clone needed)
+
+These steps are used to run the web application on any machine with the prerequisite of the machine having `docker/docker-compose` and the user has access to run docker commands.
+
 - Get the sample secrets file then follow the instructions inside to setup any required secret environment variables
 
       curl -o .backend.env https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/.backend.env-sample
@@ -69,7 +83,7 @@ Then view pushed images:
 
 the above command can be run in a new directory (with just the .env file) in either linux or windows<sup>[1]</sup> and will take care of all needed components to start the production server<sup>[2]</sup>
 
-[1] Only works in CMD for windows not Powershell, because powershell does not support `&&`
+[1] Only works in CMD for windows not Powershell, because powershell does not support `&&`. If using Powershell, then simply run each command one at a time which will also work.
 
 [2] all needed components except for needing docker installed of course
 
@@ -83,6 +97,8 @@ If you want to prune images then run `docker image prune`
 
 
 # Bulding, Pushing, and Running images for Raspberrypi (linux/arm/v7)
+
+The below commands are only concerning building/pushing/running the application for/on a raspberry pi arm7 32bit machine.
 
 ## To BUILD and PUSH:
 
