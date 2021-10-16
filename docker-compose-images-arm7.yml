@@ -4,7 +4,4 @@ services:
     frontend:
         image: arkareem/pdf-mobile-integration-frontend:arm7
     backend:
-        build:
-            args:
-                BUILD_PLATFORM: base-arm7
         image: arkareem/pdf-mobile-integration-backend:arm7

@@ -86,11 +86,11 @@ If you want to prune images then run `docker image prune`
 
 ## To BUILD and PUSH:
 
-      docker buildx bake -f docker-compose-build.yml -f docker-compose-prod.yml -f docker-compose-arm7.yml --set *.platform=linux/arm/v7 --set backend.tags=arkareem/pdf-mobile-integration-backend:arm7 --set frontend.tags=arkareem/pdf-mobile-integration-frontend:arm7 --push
+      docker buildx bake -f docker-compose-build.yml -f docker-compose-prod.yml -f docker-compose-build-arm7.yml -f docker-compose-images-arm7.yml --set *.platform=linux/arm/v7 --set backend.tags=arkareem/pdf-mobile-integration-backend:arm7 --set frontend.tags=arkareem/pdf-mobile-integration-frontend:arm7 --push
 
 ## To PUSH:
 
-      docker-compose -f docker-compose-build.yml -f docker-compose-arm7.yml push
+      docker-compose -f docker-compose-build.yml -f docker-compose-images-arm7.yml push
 
 ## To RUN:
 
@@ -100,4 +100,4 @@ Make sure to have the `.env` file:
 
 Pull and run:
 
-      curl -o docker-compose-arm7.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-arm7.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-arm7.yml pull && sudo docker-compose -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-arm7.yml -f docker-compose-watchtower.yml up
+      curl -o docker-compose-images-arm7.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images-arm7.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-images-arm7.yml pull && sudo docker-compose -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-images-arm7.yml -f docker-compose-watchtower.yml up
