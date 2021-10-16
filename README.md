@@ -77,16 +77,13 @@ If you run too many build commands, you can run `docker image ls` to see how man
 If you want to prune images then run `docker image prune`
 
 
-# FOR PI (WIP)
+# Bulding, Pushing, and Running images for Raspberrypi (linux/arm/v7)
 
-frontend: docker buildx build --build-arg APP_ENV=dev --platform linux/arm/v7 -t arm7 .
-55030ff6a61d
-
-BUILD:
-docker buildx bake -f docker-compose-build.yml -f docker-compose-prod.yml --set *.platform=linux/arm/v7 --set backend.tags=arkareem/pdf-mobile-integration-backend:arm7 --set frontend.tags=arkareem/pdf-mobile-integration-frontend:arm7
+BUILD and PUSH:
+docker buildx bake -f docker-compose-build.yml -f docker-compose-prod.yml -f docker-compose-arm7.yml --set *.platform=linux/arm/v7 --set backend.tags=arkareem/pdf-mobile-integration-backend:arm7 --set frontend.tags=arkareem/pdf-mobile-integration-frontend:arm7 --push
 
 PUSH:
-docker-compose -f docker-compose-build.yml -f docker-compose-images-arm7.yml push
+docker-compose -f docker-compose-build.yml -f docker-compose-arm7.yml push
 
 RUN:
-curl -o docker-compose-images-arm7.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images-arm7.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-images-arm7.yml pull && sudo docker-compose -f docker-compose-ports.yml -f docker-compose-images-arm7.yml -f docker-compose-watchtower.yml up
+curl -o docker-compose-arm7.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-arm7.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-arm7.yml pull && sudo docker-compose -f docker-compose-ports.yml -f docker-compose-arm7.yml -f docker-compose-watchtower.yml up
