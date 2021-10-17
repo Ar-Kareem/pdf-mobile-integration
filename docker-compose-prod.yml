@@ -5,3 +5,7 @@ services:
         build: 
             args: 
                 APP_ENV: prod  # dev or prod
+    backend:
+        build: 
+            args: 
+                APP_ENV: prod  # dev or prod

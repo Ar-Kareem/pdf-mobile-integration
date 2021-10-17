@@ -3,7 +3,8 @@ version: '3'
 services:
     frontend:
         ports:
-            - "4201:4200"
+            - "4200:4200"
     backend:
         ports:
-            - "5001:8080"
+            - "5000:8080"  # Do i need to expose backend??
+            - "5001:8081"

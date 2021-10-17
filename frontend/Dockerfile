@@ -10,13 +10,14 @@ FROM node:14 as base
     # Set the working directory to /app
     WORKDIR /app/frontend/
     # copy package.json and package-lock.json for npm install
-    COPY ./app/package*.json /app/frontend/
+    COPY ./app/package.json /app/frontend/
     # Install any needed packages specified in package.json
     RUN npm install
 
 
 # development mode ends here by just starting npm server
 FROM base as dev-final
+    RUN echo "CRITICAL: Image is using development server"
     # Set the working directory to /app
     WORKDIR /app/frontend/
     # expose the frontend port to outside the image
@@ -29,7 +30,7 @@ FROM base as dev-final
 
 # in production, need to build src by npm build to deploy to ngix
 FROM base as prod-build
-    RUN echo "running prod-build..."
+    # RUN echo "running prod-build..."
     # Set the working directory to /app
     WORKDIR /app/frontend/
     # After installing, Copy src to image

@@ -12,5 +12,8 @@ services:
             - ./frontend/app/:/app/frontend/
             - exclude_node_modules:/app/frontend/node_modules/
     backend:
+        build: 
+            args: 
+                APP_ENV: dev  # dev or prod
         volumes:
             - ./backend:/app/backend

@@ -8,4 +8,5 @@ services:
     backend:
         build:
             args:
+                APP_ENV: prod  # dev or prod
                 BUILD_PLATFORM: base-arm7  # base or base-arm7
