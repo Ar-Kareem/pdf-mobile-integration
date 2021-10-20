@@ -1,9 +1,10 @@
+# THIS FILE IS DEPRECATED, USE THE NEW TRAEFIK yml 
 version: '3'
 
 services:
     frontend:
         ports:
-            - "4200:4200"
+            - "4200:8080"
     backend:
         ports:
             - "5000:8080"  # Do i need to expose backend??

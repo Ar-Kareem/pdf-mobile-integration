@@ -9,9 +9,9 @@ Below are the different actions that can be performed in docker compose, the one
 
 If you intend to implement any changes to the source code then you should start the container in development mode using the below command.
 
-    docker-compose -f docker-compose-build.yml -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-dev.yml up --build
+    docker-compose -f docker-compose-build.yml -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-dev.yml up --build
 
-Then Goto the web browser and access `localhost:4201`
+Then Goto the web browser and access `localhost`
 
 In development mode, any changes to the frontend code will automatically be detected and updated (because in development mode, the src is mounted to the container as a volume and the frontend server is running with npm which is polling file changes several times a second). The backend also has it's src mounted as a volume and is running the server using uwsgi-nginx and it will hot reload the backend if the file uwsgi-watch.ini is touched.
 
@@ -19,9 +19,9 @@ In development mode, any changes to the frontend code will automatically be dete
 
 This is only needed if you want to make sure that the production build is running as intended.
 
-    docker-compose -f docker-compose-build.yml -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-prod.yml up --build
+    docker-compose -f docker-compose-build.yml -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-prod.yml up --build
 
-Then Goto the web browser and access `localhost:4201`
+Then Goto the web browser and access `localhost`
 
 In production mode, no changes to the source code will be reflected since no volumes are mounted. Additionally, neither the frontend nor the backend is watching for changes <sup>[1]</sup>. The frontend is also no longer running on the npm server, instead it is built in production mode and served in nginx as it is production level unlike the npm server.
 
@@ -65,7 +65,7 @@ These steps are used to run the web application on any machine with the prerequi
 - Get the latest docker compose yml files
         
       curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml
-      curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml
+      curl -o docker-compose-traefik.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-traefik.yml
       curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml
       curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml
 
@@ -75,11 +75,11 @@ These steps are used to run the web application on any machine with the prerequi
 
 - Finally, Open the ports, run the images, and continuously watch for changes:
 
-      docker-compose -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
+      docker-compose -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
 
 - Or with a single command that will also take care of all the above (except the .env part which is the first command)
 
-      curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-images.yml pull && sudo docker-compose -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
+      curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml && curl -o docker-compose-traefik.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-traefik.yml && curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-images.yml pull && sudo docker-compose -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
 
 the above command can be run in a new directory (with just the .env file) in either linux or windows<sup>[1]</sup> and will take care of all needed components to start the production server<sup>[2]</sup>
 
@@ -87,7 +87,7 @@ the above command can be run in a new directory (with just the .env file) in eit
 
 [2] all needed components except for needing docker installed of course
 
-To see the webapp in action, go to the web browser and access {SERVER_URL}:4201
+To see the webapp in action, go to the web browser and access {SERVER_URL}
 
 
 # View and Prune local images
@@ -120,4 +120,4 @@ If you have it localy then scp the file:
 
 Pull and run:
 
-      curl -o docker-compose-images-arm7.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images-arm7.yml && curl -o docker-compose-ports.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-ports.yml && curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-images-arm7.yml pull && sudo docker-compose -f docker-compose-ports.yml -f docker-compose-env.yml -f docker-compose-images-arm7.yml -f docker-compose-watchtower.yml up
+      curl -o docker-compose-images-arm7.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images-arm7.yml && curl -o docker-compose-traefik.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-traefik.yml && curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-images-arm7.yml pull && sudo docker-compose -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-images-arm7.yml -f docker-compose-watchtower.yml up

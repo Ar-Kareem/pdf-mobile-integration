@@ -13,7 +13,7 @@ class __GoogleKeyStore:
         self.GOOGLE_AUTH_KEYS_AVAILABLE = False
 
         self.GOOGLE_DISCOVERY_URL='https://accounts.google.com/.well-known/openid-configuration'
-        self.GOOGLE_CLIENT_ID = os.environ.get(' GOOGLE_CLIENT_ID', default=None)
+        self.GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', default=None)
 
         # below is ultra secret
         self.GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET', default=None)

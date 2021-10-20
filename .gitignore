@@ -1,2 +1,5 @@
 .vscode
 .backend.env
+.env
+/traefik_logs
+/letsencrypt

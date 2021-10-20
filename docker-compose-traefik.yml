@@ -1,0 +1,106 @@
+version: '3'
+
+services:
+    reverse-proxy:
+        # The official v2 Traefik docker image
+        image: traefik:v2.5
+        # Enables the web UI and tells Traefik to listen to docker
+        command: 
+            # Enable Docker in Traefik, so that it reads labels from Docker services
+            - --providers.docker
+
+            # Add a constraint to only use services with the label for this stack
+            - --providers.docker.constraints=Label(`traefik.constraint-label`, `${TRAEFIK_TAG?Variable not set}`)
+            # Do not expose all Docker services, only the ones explicitly exposed by label traefik.enable=true
+            - --providers.docker.exposedbydefault=false
+            
+            # Enable the Traefik log, for configurations and errors
+            - --log.filePath=/app/traefik_logs/traefik_logs.json
+
+            # Enable the access log, with HTTP requests
+            - --accesslog.filePath=/app/traefik_logs/traefik_access.json
+            # - --accesslog.format=json
+            # - --accesslog.fields.headers.names.CF-Connecting-IP=keep
+            
+            # enable the web UI, insecure...
+            # - --api.insecure=true
+
+            # ROUTE HTTP TO HTTPS
+            # deine entrypoint called 'web' at port 80
+            - --entrypoints.web.address=:80
+            # deine entrypoint called 'websecure' at port 443
+            - --entrypoints.websecure.address=:443
+            # redirect the 'web'entry point to the 'websecure' entrypoint
+            - --entrypoints.web.http.redirections.entrypoint.to=websecure
+            # use the middleware built into traefik to convert to https
+            - --entrypoints.web.http.redirections.entrypoint.scheme=https
+
+            # AUTO GENERATE SSL
+            - --certificatesResolvers.myresolver.acme.storage=/letsencrypt/acme.json
+            # use staging server for the generation of ssl (for testing only, to not reach quota limit) (must uncomment otherwise browser will show warning for the ssl certificate)
+            - --certificatesResolvers.myresolver.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+            - --certificatesResolvers.myresolver.acme.httpChallenge.entryPoint=web
+
+        networks:
+            - mynet
+        ports:
+            # The HTTP port
+            - "80:80"
+            - "443:443"
+            # The Web UI (enabled by --api.insecure=true)
+            # - "8080:8080"
+        volumes:
+            # So that Traefik can listen to the Docker events
+            - /var/run/docker.sock:/var/run/docker.sock
+            # to mount ssl certificates
+            - ./letsencrypt:/letsencrypt
+            # for accesslogs
+            - ./traefik_logs:/app/traefik_logs
+        labels:
+            # Use my public network (declared below)
+            - traefik.docker.network=mynet
+
+    frontend:
+        networks:
+            - mynet
+        # ports:
+            # - "4200:8080"  # not needed since ports opened by traefik
+        labels:
+            # activate traefik for this 
+            - traefik.enable=true
+            - traefik.constraint-label=${TRAEFIK_TAG?env missing}
+            # match all paths with '/', low priority (lower than the backend's '/api/')
+            - traefik.http.routers.frontend.rule=Host(`${DOMAIN?env missing}`) && PathPrefix(`/`)
+            # set the entrypoint to the ssl port
+            - traefik.http.routers.frontend.entrypoints=websecure
+            # set that only ssl is accepted on this rout
+            - traefik.http.routers.frontend.tls=true
+            # my certificate generated based on 'myresolver' defined above and the `Host` defined in the rule above
+            - traefik.http.routers.frontend.tls.certresolver=myresolver
+            # implicitly define a service for this container and also tell traefik where the which port its on
+            - traefik.http.services.frontend-service.loadbalancer.server.port=8080
+
+    backend:
+        networks:
+            - mynet
+        # ports:
+            # - "5000:8080" # not needed since ports opened by traefik
+            # - "5001:8081"  # debugging port
+        labels:
+            - traefik.enable=true
+            - traefik.constraint-label=${TRAEFIK_TAG?env missing}
+            # match only paths that start with '/api/'
+            - traefik.http.routers.backend.rule=Host(`${DOMAIN?env missing}`) && PathPrefix(`/api/`)
+            # set the entrypoint to the ssl port
+            - traefik.http.routers.backend.entrypoints=websecure
+            # set that only ssl is accepted on this rout
+            - traefik.http.routers.backend.tls=true
+            # my certificate generated based on 'myresolver' defined above and the `Host` defined in the rule above
+            - traefik.http.routers.backend.tls.certresolver=myresolver
+            # implicitly define a service for this container and also tell traefik where the which port its on
+            - traefik.http.services.backend-service.loadbalancer.server.port=8080
+
+networks:
+    mynet:
+        external: false
+        name: mynet

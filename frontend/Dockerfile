@@ -21,11 +21,12 @@ FROM base as dev-final
     # Set the working directory to /app
     WORKDIR /app/frontend/
     # expose the frontend port to outside the image
-    EXPOSE 4200
+    EXPOSE 8080
     # tell frontend server (proxy.conf.js which npm start takes) where to find backend server
+    # Update: I have absolutely no idea how frontend proxy conf is contacting backend since that is all managed by traefik now but it somehow works
     ENV FRONTEND_TARGET http://backend:8080
     # start the application
-    CMD npm start
+    CMD npm start -- --port 8080 --poll 200 --host 0.0.0.0 --disable-host-check true
 
 
 # in production, need to build src by npm build to deploy to ngix
@@ -42,8 +43,8 @@ FROM base as prod-build
 # take the built production code and deploy
 FROM nginx:1.21 as prod-final
     COPY ./nginx.my.conf /etc/nginx/conf.d/default.conf
-    ENV NGINX_PORT=4200
-    EXPOSE 4200
+    ENV NGINX_PORT=8080
+    EXPOSE 8080
     COPY --from=prod-build /app/frontend/dist/pdf-mobile-integration /app/frontend/build
 
 

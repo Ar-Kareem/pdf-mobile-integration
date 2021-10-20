@@ -45,10 +45,12 @@ FROM install-requirements as start-prod
 FROM install-requirements as start-dev
     RUN echo "CRITICAL: Image is using development server"
     # install debug requirements as well
+    COPY ./requirements_debug.txt /app/requirements_debug.txt
     RUN pip3 install -r requirements_debug.txt
     # copy backend source code
     COPY . /app/backend
     WORKDIR /app/backend
+    EXPOSE 8080
     CMD python mainDebug.py
 
 
