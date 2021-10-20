@@ -58,9 +58,10 @@ Then view pushed images:
 
 These steps are used to run the web application on any machine with the prerequisite of the machine having `docker/docker-compose` ([get docker](https://docs.docker.com/get-docker/) / [get docker compose](https://docs.docker.com/compose/install/)) and the user has access to run docker commands.
 
-- Get the sample secrets file then follow the instructions inside to setup any required secret environment variables
+- Get the sample secrets files then follow the instructions inside to setup any required secret environment variables
 
       curl -o .backend.env https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/.backend.env-sample
+      curl -o .env https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/.env-sample
 
 - Get the latest docker compose yml files
         
@@ -73,7 +74,7 @@ These steps are used to run the web application on any machine with the prerequi
         
       docker-compose -f docker-compose-images.yml pull
 
-- Finally, Open the ports, run the images, and continuously watch for changes:
+- Finally, Start Traefik, run the images, and continuously watch for changes:
 
       docker-compose -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
 
@@ -81,7 +82,7 @@ These steps are used to run the web application on any machine with the prerequi
 
       curl -o docker-compose-images.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images.yml && curl -o docker-compose-traefik.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-traefik.yml && curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-images.yml pull && sudo docker-compose -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-images.yml -f docker-compose-watchtower.yml up
 
-the above command can be run in a new directory (with just the .env file) in either linux or windows<sup>[1]</sup> and will take care of all needed components to start the production server<sup>[2]</sup>
+the above command can be run in a new directory (with just the .env files) in either linux or windows<sup>[1]</sup> and will take care of all needed components to start the production server<sup>[2]</sup>
 
 [1] Only works in CMD for windows not Powershell, because powershell does not support `&&`. If using Powershell, then simply run each command one at a time which will also work.
 
@@ -110,13 +111,15 @@ The below commands are only concerning building/pushing/running the application 
 
 ## To RUN:
 
-Make sure to have the `.env` file:
+Make sure to have the `.env` files:
 
       curl -o .backend.env https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/.backend.env-sample
+      curl -o .env https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/.env-sample
 
-If you have it localy then scp the file:
+If you have then localy then scp the file:
 
       scp ./.backend.env pi@raspberrypi:~/docker-pdf-app/
+      scp ./.env pi@raspberrypi:~/docker-pdf-app/
 
 Pull and run:
 
