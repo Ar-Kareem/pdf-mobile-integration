@@ -41,11 +41,11 @@ This is to be used to build and push any changes to docker-hub. Production serve
 
 - Push the built images to docker-hub 
 
-      docker-compose -f docker-compose-images.yml push
+      docker-compose -f docker-compose-build-prod.yml -f docker-compose-images.yml push
 
 - Or, all the above at once:
 
-      docker login && docker-compose -f docker-compose-build-prod.yml -f docker-compose-images.yml build && docker-compose -f docker-compose-images.yml push
+      docker login && docker-compose -f docker-compose-build-prod.yml -f docker-compose-images.yml build && docker-compose -f docker-compose-build-prod.yml -f docker-compose-images.yml push
 
 Then view pushed images:
 
