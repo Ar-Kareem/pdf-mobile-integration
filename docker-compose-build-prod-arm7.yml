@@ -3,9 +3,12 @@ version: '3'
 services:
     frontend:
         build: 
+            context: ./frontend
             args: 
                 APP_ENV: prod  # dev or prod
     backend:
-        build: 
-            args: 
+        build:
+            context: ./backend
+            args:
                 APP_ENV: prod  # dev or prod
+                BUILD_PLATFORM: base-arm7  # base or base-arm7

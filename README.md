@@ -9,7 +9,7 @@ Below are the different actions that can be performed in docker compose, the one
 
 If you intend to implement any changes to the source code then you should start the container in development mode using the below command.
 
-    docker-compose -f docker-compose-build.yml -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-dev.yml up --build
+    docker-compose -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-build-dev.yml up --build
 
 Then Goto the web browser and access `localhost`
 
@@ -19,7 +19,7 @@ In development mode, any changes to the frontend code will automatically be dete
 
 This is only needed if you want to make sure that the production build is running as intended.
 
-    docker-compose -f docker-compose-build.yml -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-prod.yml up --build
+    docker-compose -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-build-prod.yml up --build
 
 Then Goto the web browser and access `localhost`
 
@@ -37,15 +37,15 @@ This is to be used to build and push any changes to docker-hub. Production serve
 
 - build images in prod mode: 
 
-      docker-compose -f docker-compose-build.yml -f docker-compose-prod.yml -f docker-compose-images.yml build
+      docker-compose -f docker-compose-build-prod.yml -f docker-compose-images.yml build
 
 - Push the built images to docker-hub 
 
-      docker-compose -f docker-compose-build.yml -f docker-compose-images.yml push
+      docker-compose -f docker-compose-images.yml push
 
 - Or, all the above at once:
 
-      docker login && docker-compose -f docker-compose-build.yml -f docker-compose-prod.yml -f docker-compose-images.yml build && docker-compose -f docker-compose-build.yml -f docker-compose-images.yml push
+      docker login && docker-compose -f docker-compose-build-prod.yml -f docker-compose-images.yml build && docker-compose -f docker-compose-images.yml push
 
 Then view pushed images:
 
@@ -103,11 +103,11 @@ The below commands are only concerning building/pushing/running the application 
 
 ## To BUILD and PUSH:
 
-      docker buildx bake -f docker-compose-build.yml -f docker-compose-prod-arm7.yml -f docker-compose-images-arm7.yml --set *.platform=linux/arm/v7 --set backend.tags=arkareem/pdf-mobile-integration-backend:arm7 --set frontend.tags=arkareem/pdf-mobile-integration-frontend:arm7 --push
+      docker buildx bake -f docker-compose-build-prod-arm7.yml -f docker-compose-images-arm7.yml --set *.platform=linux/arm/v7 --set backend.tags=arkareem/pdf-mobile-integration-backend:arm7 --set frontend.tags=arkareem/pdf-mobile-integration-frontend:arm7 --push
 
 ## To PUSH:
 
-      docker-compose -f docker-compose-build.yml -f docker-compose-images-arm7.yml push
+      docker-compose -f docker-compose-images-arm7.yml push
 
 ## To RUN:
 
