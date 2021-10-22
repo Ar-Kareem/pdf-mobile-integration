@@ -4,7 +4,7 @@ from flask import Flask
 app = Flask(__name__)
 
 from .appSetup import setup_app
-setup_app()  # setup logger, login_manager, etc.
+setup_app(app)  # setup logger, login_manager, etc.
 
 from .auth.auth_blueprint import bp
 
