@@ -4,6 +4,7 @@ import json
 import requests
 from oauthlib.oauth2 import WebApplicationClient
 from flask import request, redirect
+from urllib import request as urllib_request
 
 
 logger = logging.getLogger(__name__)
@@ -33,18 +34,21 @@ CLOSE_WINDOW_SCRIPT = '<script>window.onload = window.close();</script>'
 # OAuth 2 client setup
 client = WebApplicationClient(__googleKeyStore.GOOGLE_CLIENT_ID)
 
-def google_auth_is_available():
-    return __googleKeyStore.available()
+def _google_auth_is_available():
+    status = __googleKeyStore.available()
+    if not status:
+        logger.error("Google OAuth not available")
+    return status
 
-def get_google_provider_cfg():
+def _get_google_provider_cfg():
     return requests.get(__googleKeyStore.GOOGLE_DISCOVERY_URL).json()
 
 def google_login(redirect_uri):
-    if not google_auth_is_available():
+    if not _google_auth_is_available():
         return CLOSE_WINDOW_SCRIPT
 
     # Find out what URL to hit for Google login
-    google_provider_cfg = get_google_provider_cfg()
+    google_provider_cfg = _get_google_provider_cfg()
     # below should be 'https://accounts.google.com/o/oauth2/v2/auth'
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
 
@@ -58,12 +62,12 @@ def google_login(redirect_uri):
     return redirect(request_uri)
 
 def google_after_login_redirect(user_code):
-    if not google_auth_is_available():
+    if not _google_auth_is_available():
         return CLOSE_WINDOW_SCRIPT
 
     # Find out what URL to hit to get tokens that allow you to ask for
     # things on behalf of a user
-    google_provider_cfg = get_google_provider_cfg()
+    google_provider_cfg = _get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
 
     base_url = request.base_url
@@ -107,3 +111,34 @@ def google_after_login_redirect(user_code):
         """
     else:
         return "User email not available or not verified by Google.", 400
+
+def update_google_dynamic_dns_to_current_ip():
+    """Updates the dynamic dns (basically the url) to point to the current public ip of this device.
+    Useful to call this function periodiclly such that whenever ISP updates my ip this function will tell google the new IP
+    """
+    periodic = bool(os.environ.get('GOOGLE_DNS_PERIODIC_UPDATE', default='False'))
+    hostname = os.environ.get('GOOGLE_DNS_HOSTNAME', default=None)
+    username = os.environ.get('GOOGLE_DNS_USERNAME', default=None)
+    password = os.environ.get('GOOGLE_DNS_PASSWORD', default=None)
+    print(periodic)
+
+    if hostname is None or username is None or password is None:
+        logger.error('Cannot update google dns. Missing essential environment variables')
+        return
+
+    # GET MY IP
+    with urllib_request.urlopen('https://ipecho.net/plain') as response:
+        html = response.read(amt=1024 * 1024)
+        myip = str(html, 'utf-8')
+
+    googleapi = f'https://domains.google.com/nic/update?hostname={hostname}&myip={myip}'
+    password_mgr = urllib_request.HTTPPasswordMgrWithDefaultRealm()
+    password_mgr.add_password(None, googleapi, username, password)
+    handler = urllib_request.HTTPBasicAuthHandler(password_mgr)
+    opener = urllib_request.build_opener(handler)
+    u = opener.open(googleapi)
+    html = u.read()
+    response = str(html, 'utf-8')
+
+    logger.info('Google DNS update response:' + response)
+
