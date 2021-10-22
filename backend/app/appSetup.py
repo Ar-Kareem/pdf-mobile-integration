@@ -7,7 +7,7 @@ import atexit
 from flask.app import Flask
 
 from flask_login import LoginManager
-from flask_apscheduler import APScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 
 from .auth import auth_mapper
 from .auth.auth_service_google import update_google_dynamic_dns_to_current_ip
@@ -71,25 +71,25 @@ def __init_logger():
 
 def __setup_chron_jobs(app: Flask):
 
-    scheduler = APScheduler()
-    # Fix to ensure only one Gunicorn worker grabs the scheduled task
+    def wrapper(func):  # wrap functions with app contect
+        def wrapped_func():
+            with app.app_context():
+                func()
+        return wrapped_func
+
+    scheduler = BackgroundScheduler()
+    # Fix to ensure only one worker grabs the scheduled task
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.bind(("127.0.0.1", 47200))
     except socket.error:
         pass
     else:
-        scheduler.init_app(app)
-        scheduler.start()
         # Shut down the scheduler when exiting the app
         atexit.register(lambda: scheduler.shutdown())
+        scheduler.start()
 
-
-    @scheduler.task('interval', id='do_dns_job', seconds=600, misfire_grace_time=900)
-    def dns_job():  # wrap functions with app contect
-        with scheduler.app.app_context():
-            update_google_dynamic_dns_to_current_ip()
-
+    scheduler.add_job(func=wrapper(update_google_dynamic_dns_to_current_ip), trigger="interval", seconds=50)
 
 
 __init_done = False
