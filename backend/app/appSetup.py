@@ -89,7 +89,7 @@ def __setup_chron_jobs(app: Flask):
         atexit.register(lambda: scheduler.shutdown())
         scheduler.start()
 
-    scheduler.add_job(func=wrapper(update_google_dynamic_dns_to_current_ip), trigger="interval", seconds=50)
+    scheduler.add_job(func=wrapper(update_google_dynamic_dns_to_current_ip), trigger="interval", seconds=60*60)
 
 
 __init_done = False
