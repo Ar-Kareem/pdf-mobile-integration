@@ -19,3 +19,6 @@ services:
                 APP_ENV: dev  # dev or prod
         volumes:
             - ./backend:/app/backend
+        environment:
+            FLASK_DEBUG: 0
+

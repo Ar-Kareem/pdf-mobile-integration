@@ -51,7 +51,10 @@ FROM install-requirements as start-dev
     COPY . /app/backend
     WORKDIR /app/backend
     EXPOSE 8080
-    CMD python mainDebug.py
+    ENV FLASK_RUN_PORT=8080
+    ENV FLASK_APP=mainDebug.py
+    ENV FLASK_ENV=development
+    CMD flask run --host=0.0.0.0
 
 
 # Pick the correct build route
