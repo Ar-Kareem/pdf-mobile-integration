@@ -1,3 +1,4 @@
+"""Used to setup essential parts of the application such as the flask login manager and scheduled jobs."""
 import logging
 import socket
 import sys
@@ -93,7 +94,10 @@ def __setup_chron_jobs(app: Flask):
 
 
 __init_done = False
+
+
 def setup_app(app):
+    """Perform all essential setup. Should only be called once during application startup."""
     # Make sure init only called once
     global __init_done
     if __init_done:

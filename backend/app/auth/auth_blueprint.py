@@ -14,6 +14,7 @@ bp = Blueprint('auth_blueprint', __name__)
 def index():
     return {'resp': 'AUTHENTICATED:' + str(current_user.is_authenticated)}
 
+
 @bp.route("/login")
 def login():
     base_url = request.base_url
@@ -21,6 +22,7 @@ def login():
         base_url = base_url.replace('http://', 'https://')
     redirect_uri = base_url + "/callback"
     return google_login(redirect_uri)
+
 
 @bp.route('/login/callback')
 def after_auth():

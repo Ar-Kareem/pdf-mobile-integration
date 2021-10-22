@@ -1,3 +1,4 @@
+"""Defines several services for Google OAuth implementation."""
 import os
 import logging
 import json
@@ -9,11 +10,12 @@ from urllib import request as urllib_request
 
 logger = logging.getLogger(__name__)
 
+
 class __GoogleKeyStore:
     def __init__(self) -> None:
         self.GOOGLE_AUTH_KEYS_AVAILABLE = False
 
-        self.GOOGLE_DISCOVERY_URL='https://accounts.google.com/.well-known/openid-configuration'
+        self.GOOGLE_DISCOVERY_URL = 'https://accounts.google.com/.well-known/openid-configuration'
         self.GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', default=None)
 
         # below is ultra secret
@@ -27,6 +29,7 @@ class __GoogleKeyStore:
     def available(self) -> bool:
         return self.GOOGLE_AUTH_KEYS_AVAILABLE
 
+
 __googleKeyStore = __GoogleKeyStore()
 
 
@@ -34,16 +37,24 @@ CLOSE_WINDOW_SCRIPT = '<script>window.onload = window.close();</script>'
 # OAuth 2 client setup
 client = WebApplicationClient(__googleKeyStore.GOOGLE_CLIENT_ID)
 
+
 def _google_auth_is_available():
     status = __googleKeyStore.available()
     if not status:
         logger.error("Google OAuth not available")
     return status
 
+
 def _get_google_provider_cfg():
     return requests.get(__googleKeyStore.GOOGLE_DISCOVERY_URL).json()
 
+
 def google_login(redirect_uri):
+    """Will redirect user to the Google login page followed by redirect to the redirect_uri.
+
+    Args:
+        redirect_uri: Must be an https url that will call the google_after_login_redirect function
+    """
     if not _google_auth_is_available():
         return CLOSE_WINDOW_SCRIPT
 
@@ -61,7 +72,12 @@ def google_login(redirect_uri):
     )
     return redirect(request_uri)
 
+
 def google_after_login_redirect(user_code):
+    """Code obtained from the user given to them by google on login with a google account.
+
+    Must pass this user code along with our secret key to google which will then return the user information from google.
+    """
     if not _google_auth_is_available():
         return CLOSE_WINDOW_SCRIPT
 
@@ -76,7 +92,7 @@ def google_after_login_redirect(user_code):
     url = request.url
     if 'http://' in url:  # oauth MUST use https, convert
         url = url.replace('http://', 'https://')
-    
+
     # Prepare and send a request to get tokens! Yay tokens!
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
@@ -98,7 +114,6 @@ def google_after_login_redirect(user_code):
     uri, headers, body = client.add_token(userinfo_endpoint)
     userinfo_response = requests.get(uri, headers=headers, data=body)
 
-
     if userinfo_response.json().get("email_verified"):
         return f"""
         <html>
@@ -112,8 +127,10 @@ def google_after_login_redirect(user_code):
     else:
         return "User email not available or not verified by Google.", 400
 
+
 def update_google_dynamic_dns_to_current_ip():
-    """Updates the dynamic dns (basically the url) to point to the current public ip of this device.
+    """Update the dynamic dns (basically the url) to point to the current public ip of this device.
+
     Useful to call this function periodiclly such that whenever ISP updates my ip this function will tell google the new IP
     """
     periodic = bool(os.environ.get('GOOGLE_DNS_PERIODIC_UPDATE', default='False'))
@@ -141,4 +158,3 @@ def update_google_dynamic_dns_to_current_ip():
     response = str(html, 'utf-8')
 
     logger.info('Google DNS update response:' + response)
-

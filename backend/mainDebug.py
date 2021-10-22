@@ -1,11 +1,10 @@
-# This file is Only for debugging while running docker in dev mode.
-# docker will not run this file if in production mode.
+"""This file is Only for debugging while running docker in dev mode. docker will not run this file if in production mode."""
 import logging
 from app.mainController import app
 import ptvsd
 
 
-logger = logging.getLogger('app.' + __name__)  # make this logger part of the 'app' module. (that is how to distinguish app logs with vendor module logs)
+logger = logging.getLogger('app.' + __name__)  # make logger part of the 'app' module. (that is how to distinguish app logs with vendor module logs)
 
 # start debugging
 logger.critical('CRITICAL: RUNNING IN DEBUG MODE')
@@ -19,4 +18,3 @@ if __name__ == "__main__":
     # below line set debug=False to enable debugging (I know its counterintuitive) but that will disable auto-reloading
     # set debug=True to disable debugging but enable auto-reloading app
     app.run(host="0.0.0.0", debug=True, port=8080)
-
