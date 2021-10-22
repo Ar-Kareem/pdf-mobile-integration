@@ -5,7 +5,7 @@ from app.mainController import app
 import ptvsd
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('app.' + __name__)  # make this logger part of the 'app' module. (that is how to distinguish app logs with vendor module logs)
 
 if __name__ == "__main__":
     # start debugging
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     try:
         ptvsd.enable_attach(address=('0.0.0.0', 8081))
     except Exception as e:
-        logger.warn('DEBUGGING IS DISABLED. (make sure flask is running with debug=False)')  
+        logger.warning('DEBUGGING IS DISABLED. (make sure flask is running with debug=False)')  
     # below line set debug=False to enable debugging (I know its counterintuitive) but that will disable auto-reloading
     # set debug=True to disable debugging but enable auto-reloading app
     app.run(host="0.0.0.0", debug=True, port=8080)

@@ -3,8 +3,9 @@ from flask import Flask
 
 app = Flask(__name__)
 
+from .appSetup import setup_app
+setup_app()  # setup logger, login_manager, etc.
 
-from .auth.auth_login_manager import LoginManager  # import necessary to ensure auth_login_manager has successfully setup LoginManager
 from .auth.auth_blueprint import bp
 
 
