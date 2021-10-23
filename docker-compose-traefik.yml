@@ -55,7 +55,7 @@ services:
             # to mount ssl certificates
             - ./letsencrypt:/letsencrypt
             # for accesslogs
-            - ./traefik_logs:/app/traefik_logs
+            - ./logs/traefik_logs:/app/traefik_logs
         labels:
             # Use my public network (declared below)
             - traefik.docker.network=mynet
