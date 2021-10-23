@@ -2,5 +2,8 @@ version: '3'
 
 services:
     backend:
+        volumes:
+            - ./database:/app/database  # database
+            - ./logs/backend_logs:/app/backend/logs  # backend logs
         env_file:
-            - .backend.env
+            - .backend.env  # backend environment variables

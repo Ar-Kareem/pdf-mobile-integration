@@ -5,20 +5,22 @@ import sys
 import os
 from pathlib import Path
 import atexit
-from flask.app import Flask
 
+from flask import current_app
 from flask_login import LoginManager
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from .auth import auth_mapper
-from .auth.auth_service_google import update_google_dynamic_dns_to_current_ip
-from .utils.string_utils import encoded_string_to_bytes
+from ..auth import auth_mapper
+from ..auth.auth_service_google import update_google_dynamic_dns_to_current_ip
+from ..utils.string_utils import encoded_string_to_bytes
+
+from .base_mapper import close_db, init_db
 
 
 logger = logging.getLogger(__name__)
 
 
-def __init_login_manager(app):
+def __init_login_manager():
     # get app secret key
     app_secret_key = os.environ.get('FLASK_SECRET_KEY')
     if app_secret_key is None or len(app_secret_key) < 10:
@@ -27,10 +29,10 @@ def __init_login_manager(app):
     else:
         encoded_string_to_bytes(app_secret_key)
 
-    app.secret_key = app_secret_key
+    current_app.secret_key = app_secret_key
 
     login_manager = LoginManager()
-    login_manager.init_app(app)
+    login_manager.init_app(current_app)
 
     @login_manager.user_loader
     def load_user_inner(user_id):
@@ -39,13 +41,13 @@ def __init_login_manager(app):
 
 def __init_logger():
     formatter = logging.Formatter('[%(asctime)s] {%(filename)s:%(lineno)d - %(name)s} %(levelname)s - %(message)s')
-    Path("logs/backend_logs").mkdir(exist_ok=True)
+    Path("logs").mkdir(exist_ok=True)
 
     # set up log for this project (warn/debug/console)
-    warn_file_handler = logging.FileHandler(filename='logs/backend_logs/logs_warn.log')
+    warn_file_handler = logging.FileHandler(filename='logs/logs_warn.log')
     warn_file_handler.setLevel(logging.WARN)
     warn_file_handler.setFormatter(formatter)
-    debug_file_handler = logging.FileHandler(filename='logs/backend_logs/logs_debug.log')
+    debug_file_handler = logging.FileHandler(filename='logs/logs_debug.log')
     debug_file_handler.setLevel(logging.DEBUG)
     debug_file_handler.setFormatter(formatter)
     stderr_handler = logging.StreamHandler(sys.stderr)
@@ -60,7 +62,7 @@ def __init_logger():
     my_root.addHandler(stderr_handler)
 
     # set up log for other modules (warn/console)
-    warn_file_handler = logging.FileHandler(filename='logs/backend_logs/logs_modules_warn.log')
+    warn_file_handler = logging.FileHandler(filename='logs/logs_modules_warn.log')
     warn_file_handler.setLevel(logging.WARN)
     warn_file_handler.setFormatter(formatter)
     # add handlers to the logger
@@ -70,11 +72,11 @@ def __init_logger():
     root.addHandler(stderr_handler)
 
 
-def __setup_chron_jobs(app: Flask):
+def __setup_chron_jobs():
 
     def wrapper(func):  # wrap functions with app contect
         def wrapped_func():
-            with app.app_context():
+            with current_app.app_context():
                 func()
         return wrapped_func
 
@@ -96,7 +98,7 @@ def __setup_chron_jobs(app: Flask):
 __init_done = False
 
 
-def setup_app(app):
+def setup_app():
     """Perform all essential setup. Should only be called once during application startup."""
     # Make sure init only called once
     global __init_done
@@ -105,5 +107,8 @@ def setup_app(app):
     __init_done = True
 
     __init_logger()
-    __init_login_manager(app)
-    __setup_chron_jobs(app)
+    __init_login_manager()
+    __setup_chron_jobs()
+
+    init_db()
+    current_app.teardown_appcontext(close_db)
