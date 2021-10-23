@@ -83,9 +83,6 @@ services:
     backend:
         networks:
             - mynet
-        # ports:
-            # - "5000:8080" # not needed since ports opened by traefik
-            # - "5001:8081"  # debugging port
         labels:
             - traefik.enable=true
             - traefik.constraint-label=${TRAEFIK_TAG?env missing}

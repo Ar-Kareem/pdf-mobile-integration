@@ -17,8 +17,10 @@ services:
             context: ./backend
             args: 
                 APP_ENV: dev  # dev or prod
+        ports:
+            - "5001:8081"  # debugging port
         volumes:
             - ./backend:/app/backend
         environment:
-            FLASK_DEBUG: 0
+            FLASK_DEBUG: 1
 
