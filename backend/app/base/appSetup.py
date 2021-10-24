@@ -36,7 +36,7 @@ def __init_login_manager():
 
     @login_manager.user_loader
     def load_user_inner(user_id):
-        return auth_mapper.get(user_id)
+        return auth_mapper.get_user(user_id)
 
 
 def __init_logger():

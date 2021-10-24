@@ -26,11 +26,13 @@ def init_db():
     db = get_db()
 
     sql = '''
-    CREATE TABLE IF NOT EXISTS user (
-            id TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
+    CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            gid TEXT NOT NULL UNIQUE,
+            first_name TEXT NOT NULL,
+            last_name TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
-            profile_pic TEXT NOT NULL
+            picture TEXT
         );
     '''
     db.executescript(sql)

@@ -22,5 +22,4 @@ services:
         volumes:
             - ./backend:/app/backend
         environment:
-            FLASK_DEBUG: 1
-
+            FLASK_DEBUG: 0
