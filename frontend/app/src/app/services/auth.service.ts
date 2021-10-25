@@ -10,6 +10,7 @@ export class AuthService extends BaseService {
 
   protected readonly API = {
     BASE_AUTH_API: this.AUTH_API + '',
+    LOGOUT: this.AUTH_API + 'logout'
   }
 
   constructor(private http: HttpClient) { super() }
@@ -17,6 +18,13 @@ export class AuthService extends BaseService {
   auth() {
     console.log('URL SENT');
     return this.http.post<any>(this.API.BASE_AUTH_API, {}, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  logout() {
+    return this.http.post<any>(this.API.LOGOUT, {}, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     );

@@ -28,4 +28,13 @@ export class AppComponent implements OnInit {
       }
     })
   }
+
+  login() {
+    window.open('/api/auth/login');
+  }
+
+  async logout() {
+    const logout = await this.authService.logout().toPromise()
+    console.log('logged out', logout);
+  }
 }

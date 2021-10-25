@@ -319,6 +319,7 @@
         [style.width]="'110px'"
         label="Logout" 
         icon="fa fa-right-to-bracket fa-flip-horizontal" iconPos="left"
+        (onClick)="logout()"
       ></p-button>
     </div>
     <ng-template #elseBlock>
@@ -326,6 +327,7 @@
         [style.width]="'110px'"
         label="Login" 
         icon="fa fa-right-to-bracket" iconPos="left"
+        (onClick)="login()"
       ></p-button>
     </ng-template>
 
