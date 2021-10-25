@@ -9,6 +9,7 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit {
   title = 'pdf-mobile-integration';
   auth_return: string | undefined;
+  user_logged_in: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -19,6 +20,11 @@ export class AppComponent implements OnInit {
       console.log(x)
       if (!!x) {
         this.auth_return = x.resp
+      }
+      if (!!x?.resp) {
+        this.user_logged_in = true;
+      } else {
+        this.user_logged_in = false
       }
     })
   }

@@ -313,7 +313,15 @@
   />
   <span>PDF Mobile Integration</span>
     <div class="spacer"></div>
-</div>
+
+    <div *ngIf="user_logged_in; else elseBlock">
+      <p-button label="Click" icon="pi pi-check" iconPos="left"></p-button>
+    </div>
+    <ng-template #elseBlock>
+      <p-button label="Click" icon="pi pi-check" iconPos="left"></p-button>
+    </ng-template>
+
+  </div>
 
 <div class="content" role="main">
 
@@ -331,7 +339,7 @@
       </g>
     </svg>
 
-    <span>{{ title }} app is running!</span>
+    <span>{{ title }}</span>
     <span>{{ auth_return }}!</span>
 
     <svg id="rocket-smoke" xmlns="http://www.w3.org/2000/svg" width="516.119" height="1083.632" viewBox="0 0 516.119 1083.632">
