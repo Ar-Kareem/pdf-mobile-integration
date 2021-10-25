@@ -10,9 +10,9 @@ FROM node:14 as base
     # Set the working directory to /app
     WORKDIR /app/frontend/
     # copy package.json and package-lock.json for npm install
-    COPY ./app/package.json /app/frontend/
+    COPY ./app/package*.json /app/frontend/
     # Install any needed packages specified in package.json
-    RUN npm install
+    RUN npm ci
 
 
 # development mode ends here by just starting npm server
