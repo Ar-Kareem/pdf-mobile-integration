@@ -315,10 +315,18 @@
     <div class="spacer"></div>
 
     <div *ngIf="user_logged_in; else elseBlock">
-      <p-button label="Click" icon="pi pi-check" iconPos="left"></p-button>
+      <p-button 
+        [style.width]="'110px'"
+        label="Logout" 
+        icon="fa fa-right-to-bracket fa-flip-horizontal" iconPos="left"
+      ></p-button>
     </div>
     <ng-template #elseBlock>
-      <p-button label="Click" icon="pi pi-check" iconPos="left"></p-button>
+      <p-button 
+        [style.width]="'110px'"
+        label="Login" 
+        icon="fa fa-right-to-bracket" iconPos="left"
+      ></p-button>
     </ng-template>
 
   </div>
