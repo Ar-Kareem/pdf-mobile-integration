@@ -1,6 +1,7 @@
 import logging
 from flask import Blueprint, request
 from flask_login import current_user
+from flask_login.utils import login_required, logout_user
 
 from .auth_service_google import google_login, google_after_login_redirect
 
@@ -12,7 +13,7 @@ bp = Blueprint('auth_blueprint', __name__)
 
 @bp.route("/", methods=['GET', 'POST'])
 def index():
-    return {'resp': 'AUTHENTICATED:' + str(current_user.is_authenticated)}
+    return {'resp': current_user.is_authenticated}
 
 
 @bp.route("/login")
@@ -29,3 +30,9 @@ def after_auth():
     # Get authorization code Google sent back to you
     user_code = request.args.get("code")
     return google_after_login_redirect(user_code)
+
+@bp.route('/logout', methods=['POST'])
+@login_required
+def logout():
+    resp = logout_user()
+    return {'resp': resp}
