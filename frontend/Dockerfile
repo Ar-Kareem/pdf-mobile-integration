@@ -27,6 +27,7 @@ FROM base as dev-final
     ENV FRONTEND_TARGET http://backend:8080
     # start the application
     CMD npm start -- --port 8080 --poll 200 --host 0.0.0.0 --disable-host-check true
+    # CMD while :; do echo '.'; sleep 5 ; done
 
 
 # in production, need to build src by npm build to deploy to ngix
