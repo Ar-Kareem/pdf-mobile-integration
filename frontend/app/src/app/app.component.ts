@@ -17,10 +17,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.authService.auth().subscribe(x => {
-      console.log(x)
-      if (!!x) {
-        this.auth_return = x.resp
-      }
+      this.auth_return = x.resp + ''
       if (!!x?.resp) {
         this.user_logged_in = true;
       } else {
@@ -29,12 +26,17 @@ export class AppComponent implements OnInit {
     })
   }
 
-  login() {
-    window.open('/api/auth/login');
+  async login() {
+    const userStatus = (await this.authService.auth().toPromise()).resp
+    if (userStatus) { // already logged in
+      this.user_logged_in = userStatus
+    } else { // not logged in
+      window.open('/api/auth/login');
+    }
   }
 
   async logout() {
     const logout = await this.authService.logout().toPromise()
-    console.log('logged out', logout);
+    window.location.reload() // refresh page
   }
 }

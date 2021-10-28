@@ -17,7 +17,7 @@ export class AuthService extends BaseService {
 
   auth() {
     console.log('URL SENT');
-    return this.http.post<any>(this.API.BASE_AUTH_API, {}, this.httpOptions)
+    return this.http.post<{resp: boolean}>(this.API.BASE_AUTH_API, {}, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     );
