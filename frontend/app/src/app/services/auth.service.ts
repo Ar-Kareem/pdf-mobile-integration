@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 import { BaseService } from './base.service';
+import { User } from '@models/UserModel';
 
 @Injectable()
 export class AuthService extends BaseService {
@@ -17,7 +17,7 @@ export class AuthService extends BaseService {
 
   auth() {
     console.log('URL SENT');
-    return this.http.post<{resp: boolean}>(this.API.BASE_AUTH_API, {}, this.httpOptions)
+    return this.http.post<User>(this.API.BASE_AUTH_API, {}, this.httpOptions)
     .pipe(
       catchError(this.handleError)
     );

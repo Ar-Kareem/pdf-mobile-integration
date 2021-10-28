@@ -9,12 +9,13 @@ class User(UserMixin):
         id_: unique ID that identifies this user.
     """
 
-    def __init__(self, id_,
-                 gid,
-                 given_name,
-                 family_name,
-                 picture,
-                 email,
+    def __init__(self,
+                 id_: int,
+                 gid: str,
+                 given_name: str,
+                 family_name: str,
+                 picture: str,
+                 email: str,
                  ):
         """Init User."""
         self.id = id_
