@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   }
 
   private initStore() {
+    this.store.dispatch(authActions.fetchUserAttempted());
     this.store.select(authSelectors.selectUser).subscribe(user => {this.user = user})
   }
 
