@@ -11,7 +11,9 @@ FROM node:14 as base
     WORKDIR /app/frontend/
     # copy package.json and package-lock.json for npm install
     COPY ./app/package*.json /app/frontend/
-    # Install any needed packages specified in package.json
+    # recreate package-lock.json from package.json (only needed to run when changing package.json, must enter container and run: npm i --package-lock-only)
+    # RUN npm install
+    # Install any needed packages specified in package-lock.json
     RUN npm ci
 
 
