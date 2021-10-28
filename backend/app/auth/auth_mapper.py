@@ -30,8 +30,8 @@ def get_user(user_id: int):
                 gid=user[1],
                 given_name=user[2],
                 family_name=user[3],
-                picture=user[4],
-                email=user[5]
+                email=user[4],
+                picture=user[5],
                 )
     return user
 
