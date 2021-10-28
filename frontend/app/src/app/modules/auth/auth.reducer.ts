@@ -1,36 +1,66 @@
-import { createAction, createReducer, on, props } from '@ngrx/store';
+import { createAction, createFeatureSelector, createReducer, createSelector, on, props } from '@ngrx/store';
 
 import { User } from '@models/UserModel';
 
+
 // ACTIONS
+
 const fetchUserAttempted = createAction('[Auth Action] fetchUserAttempted');
-const fetchUserSuccess = createAction('[Auth Action] fetchUserSuccess', props<User>());
+const fetchUserSuccess = createAction('[Auth Action] fetchUserSuccess', props<{user: User}>());
 const fetchUserFailed = createAction('[Auth Action] fetchUserFailed');
 
-// const fetchUserSuccess2 = createAction('[Auth Action] fetchUserSuccess', props<{user1: User, user2: User}>());
+const logOutAttempted = createAction('[Auth Action] logOutAttempted');
+const logOutSuccess = createAction('[Auth Action] logOutSuccess');
+const logOutFailed = createAction('[Auth Action] logOutFailed');
 
 export const authActions = {
-    fetchUserAttempted: fetchUserAttempted,
-    fetchUserSuccess: fetchUserSuccess,
-    fetchUserFailed: fetchUserFailed,
-}
-
-// STATE
-export type authState = {
-    action: string|null,
-    user: User|null,
-}
-export const initialState: authState = {
-    action: null,
-    user: null
+  fetchUserAttempted,
+  fetchUserSuccess,
+  fetchUserFailed,
+  logOutAttempted,
+  logOutSuccess,
+  logOutFailed,
 };
 
-// REDUCER
-export const authReducer = createReducer(
-    initialState,
-    on(fetchUserSuccess, (state, user) => ({...state, user: user, action: fetchUserSuccess.type})),
-    // on(fetchUserSuccess2, (state, {user1, user2}) => ({...state, user: user2, action: fetchUserSuccess2.type})),
 
-    on(fetchUserAttempted, (state, ) => ({...state, action: fetchUserAttempted.type})),
-    on(fetchUserFailed, (state, ) => ({...state, action: fetchUserFailed.type})),
+// STATE
+
+export type authState = {
+  action: string|null,
+  user: User|null,
+}
+const initialState: authState = {
+  action: null,
+  user: null
+};
+
+
+// REDUCER
+
+export const authReducer = createReducer(
+  initialState,
+
+  on(fetchUserAttempted, (state, ) => ({...state, action: fetchUserAttempted.type})),
+  on(fetchUserSuccess, (state, { user }) => ({...state, action: fetchUserSuccess.type, user: user})),
+  on(fetchUserFailed, (state, ) => ({...state, action: fetchUserFailed.type, user: null})),
+
+  on(logOutAttempted, (state, ) => ({...state, action: logOutAttempted.type})),
+  on(logOutSuccess, (state, ) => ({...state, action: logOutSuccess.type, user: null})),
+  on(logOutFailed, (state, ) => ({...state, action: logOutFailed.type, user: null})),
 );
+
+
+// SELECTORS
+
+export const authFeatureKey = 'authFeatureKey';
+const selectAuthState = createFeatureSelector<authState>(authFeatureKey);
+
+const selectUser = createSelector(
+  selectAuthState,
+  (state) => state.user
+);
+
+export const authSelectors = {
+  selectAuthState,
+  selectUser,
+}

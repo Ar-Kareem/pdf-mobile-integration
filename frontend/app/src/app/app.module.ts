@@ -3,11 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from '@services/auth.service';
-import { authReducer } from '@modules/auth/auth.reducer';
+import { authFeatureKey, authReducer } from '@modules/auth/auth.reducer';
+import { AuthEffects } from '@modules/auth/auth.effects';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,8 @@ import { authReducer } from '@modules/auth/auth.reducer';
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot({ auth: authReducer }),
+    StoreModule.forRoot({ [authFeatureKey]: authReducer, }),
+    EffectsModule.forRoot([AuthEffects, ]),
     HttpClientModule,
     AppRoutingModule,
     ButtonModule,

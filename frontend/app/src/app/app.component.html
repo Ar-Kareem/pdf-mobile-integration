@@ -314,7 +314,7 @@
   <span>PDF Mobile Integration</span>
     <div class="spacer"></div>
 
-    <div *ngIf="user_logged_in; else elseBlock">
+    <div *ngIf="user?.is_authenticated; else elseBlock">
       <p-button 
         [style.width]="'110px'"
         label="Logout" 
@@ -350,7 +350,6 @@
     </svg>
 
     <span>{{ title }}</span>
-    <span>{{ auth_return }}!</span>
 
     <svg id="rocket-smoke" xmlns="http://www.w3.org/2000/svg" width="516.119" height="1083.632" viewBox="0 0 516.119 1083.632">
       <title>Rocket Ship Smoke</title>

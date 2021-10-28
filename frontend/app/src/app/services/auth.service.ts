@@ -17,15 +17,9 @@ export class AuthService extends BaseService {
 
   auth() {
     return this.http.post<User>(this.API.BASE_AUTH_API, {}, this.httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    );
   }
 
   logout() {
-    return this.http.post<any>(this.API.LOGOUT, {}, this.httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<null>(this.API.LOGOUT, {}, this.httpOptions)
   }
 }
