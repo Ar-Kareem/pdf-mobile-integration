@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { authActions } from '@modules/auth/auth.reducer';
+import { Store } from '@ngrx/store';
 import { AuthService } from './services/auth.service';
 
 @Component({
@@ -12,10 +14,13 @@ export class AppComponent implements OnInit {
   user_logged_in: boolean = false;
 
   constructor(
+    private store: Store,
     private authService: AuthService,
   ) { }
 
   ngOnInit() {
+    (window as any)['AppComponent'] = this;
+    (window as any)['authActions'] = authActions;
     this.authService.auth().subscribe(x => {
       this.auth_return = x.is_authenticated + ''
       console.log(this.auth_return);

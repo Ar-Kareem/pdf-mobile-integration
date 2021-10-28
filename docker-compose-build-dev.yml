@@ -9,7 +9,6 @@ services:
         volumes:
             - ./frontend/app/:/app/frontend/
             - /app/frontend/node_modules
-            - /app/frontend/node_modules_DELETE
     backend:
         build: 
             context: ./backend

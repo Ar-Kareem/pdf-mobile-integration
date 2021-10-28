@@ -16,7 +16,6 @@ export class AuthService extends BaseService {
   constructor(private http: HttpClient) { super() }
 
   auth() {
-    console.log('URL SENT');
     return this.http.post<User>(this.API.BASE_AUTH_API, {}, this.httpOptions)
     .pipe(
       catchError(this.handleError)
