@@ -1,14 +1,15 @@
-<div *ngIf="!!pdf.available == true">
-    <pdf-viewer [src]="pdf.src"
-                [render-text]="true"
-                style="display: block;"
-                [zoom-scale]="'page-width'"
-                [original-size]="false"
-    ></pdf-viewer>
-</div>
 <div *ngIf="!pdf.available == true">
     <div>NO PDF??</div>
 </div>
-<ng-template #elseBlock>
-    <div>NO PDF</div>
-</ng-template>
+<div #container *ngIf="!!pdf.available == true" 
+    style="position: relative; width: 100vw;" 
+    [ngStyle]="{'height': !!toolbarOpen? 'calc(100vh - 60px)' : '100vh'}"
+    >
+    <pdf-viewer [src]="pdf.src"
+                [render-text]="true"
+                [original-size]="false"
+                [zoom-scale]="'page-width'"
+                [autoresize]="true"
+                (click)="onClickPdfViewer($event)"
+    ></pdf-viewer>
+</div>
