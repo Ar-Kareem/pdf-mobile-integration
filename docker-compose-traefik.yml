@@ -41,6 +41,9 @@ services:
             - --certificatesResolvers.myresolver.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
             - --certificatesResolvers.myresolver.acme.httpChallenge.entryPoint=web
 
+            # external traefik settings
+            # - --providers.file.filename=/app/traefik.yml
+
         networks:
             - mynet
         ports:
@@ -56,6 +59,8 @@ services:
             - ./letsencrypt:/letsencrypt
             # for accesslogs
             - ./logs/traefik_logs:/app/traefik_logs
+            # external traefik settings
+            # - ./traefik.yml:/app/traefik.yml
         labels:
             # Use my public network (declared below)
             - traefik.docker.network=mynet
