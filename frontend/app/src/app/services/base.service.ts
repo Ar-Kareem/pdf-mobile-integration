@@ -10,11 +10,11 @@ import { HttpHeaders } from '@angular/common/http';
 export abstract class BaseService {
 
   // base api
-  protected readonly BASE_API = '/api/'
+  protected readonly BASE_API = '/api/';
 
   // controller api's
-  protected readonly TRIAL_API = this.BASE_API + 'trial/'
-  protected readonly AUTH_API = this.BASE_API + 'auth/'
+  protected readonly AUTH_API = this.BASE_API + 'auth/';
+  protected readonly PDF_API = this.BASE_API + 'pdf/';
 
 
   // child api implements this

@@ -3,7 +3,8 @@
 from flask import Flask
 
 from .base.appSetup import setup_app
-from .auth.auth_blueprint import bp
+from .auth.auth_blueprint import bp as auth_bp
+from .pdf.pdf_blueprint import bp as pdf_bp
 
 app = Flask(__name__)
 
@@ -11,4 +12,5 @@ with app.app_context():
     setup_app()  # setup logger, login_manager, etc.
 
 
-app.register_blueprint(bp, url_prefix='/api/auth')
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
+app.register_blueprint(pdf_bp, url_prefix='/api/pdf')

@@ -16,7 +16,7 @@ bp = Blueprint('auth_blueprint', __name__)
 
 
 @bp.route("/", methods=['GET', 'POST'])
-def index():
+def get_user():
     user: Union[User, AnonymousUserMixin] = current_user
     if user.is_authenticated:
         return {

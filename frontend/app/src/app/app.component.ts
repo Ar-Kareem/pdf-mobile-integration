@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { authActions, authSelectors } from '@modules/auth/auth.reducer';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@modules/auth/auth.service';
 import { User } from '@models/UserModel';
 
 @Component({

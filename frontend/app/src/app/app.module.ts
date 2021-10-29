@@ -7,24 +7,34 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@modules/auth/auth.service';
+import { PdfService } from '@modules/pdf/pdf.service';
 import { authFeatureKey, authReducer } from '@modules/auth/auth.reducer';
 import { AuthEffects } from '@modules/auth/auth.effects';
+import { PdfComponent } from '@modules/pdf/pdf.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PdfComponent
   ],
   imports: [
+    StoreModule.forRoot({ 
+      [authFeatureKey]: authReducer, 
+    }),
+    EffectsModule.forRoot([
+      AuthEffects, 
+    ]),
     BrowserModule,
-    StoreModule.forRoot({ [authFeatureKey]: authReducer, }),
-    EffectsModule.forRoot([AuthEffects, ]),
     HttpClientModule,
     AppRoutingModule,
     ButtonModule,
+    PdfViewerModule,
   ],
   providers: [
     AuthService,
+    PdfService,
   ],
   bootstrap: [AppComponent]
 })

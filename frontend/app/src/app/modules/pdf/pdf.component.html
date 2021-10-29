@@ -1,0 +1,12 @@
+<div *ngIf="!!pdf.available == true">
+    <pdf-viewer [src]="pdf.src"
+                [render-text]="true"
+                style="display: block;"
+    ></pdf-viewer>
+</div>
+<div *ngIf="!pdf.available == true">
+    <div>NO PDF??</div>
+</div>
+<ng-template #elseBlock>
+    <div>NO PDF</div>
+</ng-template>
