@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit {
   title = 'pdf-mobile-integration';
   user: User|null = null;
   application_mode: boolean = false;
+  headerVisibility = true;
 
   constructor(
     private store: Store,
@@ -34,6 +35,7 @@ export class HeaderComponent implements OnInit {
   private initStore() {
     this.store.dispatch(authActions.fetchUserAttempted());
     this.store.select(authSelectors.selectUser).subscribe(user => {this.user = user})
+    this.store.select(authSelectors.selectHeaderVisibility).subscribe(status => {this.headerVisibility = status})
   }
 
   async login() {

@@ -13,6 +13,8 @@ const logOutAttempted = createAction('[Auth Action] logOutAttempted');
 const logOutSuccess = createAction('[Auth Action] logOutSuccess');
 const logOutFailed = createAction('[Auth Action] logOutFailed');
 
+const toggleHeaderVisibility = createAction('[Auth Action] toggleHeaderVisibility');
+
 export const authActions = {
   fetchUserAttempted,
   fetchUserSuccess,
@@ -20,6 +22,7 @@ export const authActions = {
   logOutAttempted,
   logOutSuccess,
   logOutFailed,
+  toggleHeaderVisibility,
 };
 
 
@@ -28,10 +31,12 @@ export const authActions = {
 export type authState = {
   action: string|null,
   user: User|null,
+  headerVisibility: boolean,
 }
 const initialState: authState = {
   action: null,
-  user: null
+  user: null,
+  headerVisibility: true,
 };
 
 
@@ -47,6 +52,8 @@ export const authReducer = createReducer(
   on(logOutAttempted, (state, ) => ({...state, action: logOutAttempted.type})),
   on(logOutSuccess, (state, ) => ({...state, action: logOutSuccess.type, user: null})),
   on(logOutFailed, (state, ) => ({...state, action: logOutFailed.type, user: null})),
+
+  on(toggleHeaderVisibility, (state, ) => ({...state, action: toggleHeaderVisibility.type, headerVisibility: !state.headerVisibility})),
 );
 
 
@@ -60,7 +67,13 @@ const selectUser = createSelector(
   (state) => state.user
 );
 
+const selectHeaderVisibility = createSelector(
+  selectAuthState,
+  (state) => state.headerVisibility
+);
+
 export const authSelectors = {
   selectAuthState,
   selectUser,
+  selectHeaderVisibility,
 }
