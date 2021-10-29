@@ -2,6 +2,8 @@
     <pdf-viewer [src]="pdf.src"
                 [render-text]="true"
                 style="display: block;"
+                [zoom-scale]="'page-width'"
+                [original-size]="false"
     ></pdf-viewer>
 </div>
 <div *ngIf="!pdf.available == true">
