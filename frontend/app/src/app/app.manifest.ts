@@ -3,7 +3,7 @@ const DEFAULT_MANIFEST = {
     "short_name": "pdf-integration",
     "theme_color": "#a70000",
     "background_color": "#a70000",
-    "display": "standalone",
+    "display": "fullscreen",
     "orientation": "any",
     "lang": "en",
     "dir": "rtl",

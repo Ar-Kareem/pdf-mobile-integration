@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { getDefaultApplicationManifest, setGlobalApplicationManifest } from './app.manifest';
 
 @Component({
@@ -10,18 +10,26 @@ import { getDefaultApplicationManifest, setGlobalApplicationManifest } from './a
 export class AppComponent implements OnInit {
 
   constructor(
-    private router: Router
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.setupManifest();
     (window as any)['AppComponent'] = this;
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (!!params.c) {
+        const manifestJSON = getDefaultApplicationManifest();
+        manifestJSON['background_color'] = '#' + params.c
+        manifestJSON['theme_color'] = '#' + params.c
+        setGlobalApplicationManifest(manifestJSON);
+      }
+    });
   }
 
   setupManifest() {
     const manifestJSON = getDefaultApplicationManifest();
     // manifestJSON['background_color'] = '#333333'
     // manifestJSON['theme_color'] = '#333333'
-    setGlobalApplicationManifest(getDefaultApplicationManifest())
+    setGlobalApplicationManifest(manifestJSON);
   }
 }

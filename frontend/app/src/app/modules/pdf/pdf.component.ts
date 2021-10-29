@@ -40,6 +40,26 @@ export class PdfComponent implements OnInit {
   onClickPdfViewer(event: MouseEvent) {
     if (event.detail % 3 == 0) {
       this.store.dispatch(authActions.toggleHeaderVisibility());
+      this.toggleFullScreen();
+    }
+  }
+
+  /**
+   * Toggle fullscreen
+   * From https://developers.google.com/web/fundamentals/native-hardware/fullscreen/
+   */
+  private toggleFullScreen() {
+    var doc = window.document as any;
+    var docEl = doc.documentElement as any;
+  
+    var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+    var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+  
+    if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+      requestFullScreen.call(docEl);
+    }
+    else {
+      cancelFullScreen.call(doc);
     }
   }
 
