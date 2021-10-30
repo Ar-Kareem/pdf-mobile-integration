@@ -44,7 +44,7 @@ services:
             # external traefik settings
             # - --providers.file.filename=/app/traefik.yml
         environment:
-            - DEV_DOMAIL
+            - DEV_DOMAIN
             - DEV_INTERNAL_IP
         networks:
             - mynet
