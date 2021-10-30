@@ -38,8 +38,10 @@ export class PdfComponent implements OnInit {
   }
 
   onClickPdfViewer(event: MouseEvent) {
-    if (event.detail % 3 == 0) {
+    if (event.detail == 2) {
       this.store.dispatch(authActions.toggleHeaderVisibility());
+    }
+    if (event.detail == 3) {
       this.toggleFullScreen();
     }
   }

@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 import { User } from '@models/UserModel';
 import { authActions, authSelectors } from '@modules/auth/auth.reducer';
 import { AuthService } from '@modules/auth/auth.service';
+import { appSelectors } from 'src/app/app.reducer';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -16,6 +18,7 @@ export class HeaderComponent implements OnInit {
   user: User|null = null;
   application_mode: boolean = false;
   headerVisibility = true;
+  testcounter: number = 0;
 
   constructor(
     private store: Store,
@@ -24,6 +27,20 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.store.select(appSelectors.selectSessionId)
+    .subscribe((id) => {
+      console.log(id + 'ID');
+      if(!!id) {
+        let session = JSON.parse(localStorage.getItem('appSession-' + id) || '{}');
+        let c = Number(session['counter'] || 0)
+
+        this.testcounter = c++;
+        session['counter'] = c;
+
+        localStorage.setItem('appSession-' + id, JSON.stringify(session));
+      }
+    })
+
     this.activeRoute.queryParams.subscribe((qp) => {
       this.application_mode = !!qp.application;
     });
