@@ -14,6 +14,7 @@ import { authFeatureKey, authReducer } from '@modules/auth/auth.reducer';
 import { AuthEffects } from '@modules/auth/auth.effects';
 import { PdfComponent } from '@modules/pdf/pdf.component';
 import { HeaderComponent } from './modules/header/header.component';
+import { appFeatureKey, appReducer } from './app.reducer';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { HeaderComponent } from './modules/header/header.component';
   ],
   imports: [
     StoreModule.forRoot({ 
-      [authFeatureKey]: authReducer, 
+      [authFeatureKey]: authReducer,
+      [appFeatureKey]: appReducer,
     }),
     EffectsModule.forRoot([
       AuthEffects, 

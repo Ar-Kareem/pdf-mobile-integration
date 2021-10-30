@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { getDefaultApplicationManifest, setGlobalApplicationManifest } from './app.manifest';
+import { appActions, appSelectors } from './app.reducer';
 
 @Component({
   selector: 'app-root',
@@ -10,18 +12,16 @@ import { getDefaultApplicationManifest, setGlobalApplicationManifest } from './a
 export class AppComponent implements OnInit {
 
   constructor(
-    private activatedRoute: ActivatedRoute
+    private store: Store,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.setupManifest();
     (window as any)['AppComponent'] = this;
     this.activatedRoute.queryParams.subscribe(params => {
-      if (!!params.c) {
-        const manifestJSON = getDefaultApplicationManifest();
-        manifestJSON['background_color'] = '#' + params.c
-        manifestJSON['theme_color'] = '#' + params.c
-        setGlobalApplicationManifest(manifestJSON);
+      if(!!params.session) {
+        this.store.dispatch(appActions.setAppSession({sessionId: params.session}))
       }
     });
   }
