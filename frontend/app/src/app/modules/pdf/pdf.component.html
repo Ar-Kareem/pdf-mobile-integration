@@ -3,7 +3,7 @@
 </div>
 <div #container *ngIf="!!pdf.available == true" 
     style="position: relative; width: 100vw;" 
-    [ngStyle]="{'height': !!toolbarOpen? 'calc(100vh - 60px)' : '100vh'}"
+    [ngStyle]="{'height': !!toolbarOpen? 'calc(100vh - 60px)' : 'calc(100vh - 1px)'}"
     >
     <pdf-viewer [src]="pdf.src"
                 [render-text]="true"

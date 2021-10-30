@@ -15,7 +15,7 @@
 
   &.hidden {
     visibility: hidden;
-    height: 1px;
+    height: 1px; // THIS 1 PIXEL IS EXTREMELY IMPORTANT FOR USABILITY MOBILE VIEW TO PREVENT THE URL BAR FROM SHOWING UP WHEN DRAGGING PDF DOWNWARDS
   }
 }
 
