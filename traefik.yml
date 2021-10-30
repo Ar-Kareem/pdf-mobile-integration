@@ -1,0 +1,14 @@
+tcp:
+  routers:
+    laptop:
+      entryPoints:
+        - "websecure"
+      rule: "HostSNI(`{{env "DEV_DOMAIN"}}`)"
+      service: laptopservice
+      tls:
+        passthrough: true
+  services:
+    laptopservice:
+      loadBalancer:
+        servers:
+          - address: "{{env "DEV_INTERNAL_IP"}}"

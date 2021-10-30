@@ -121,6 +121,10 @@ If you have then localy then scp the file:
       scp ./.backend.env pi@raspberrypi:~/docker-pdf-app/
       scp ./.env pi@raspberrypi:~/docker-pdf-app/
 
-Pull and run:
+Pull files:
 
-      curl -o docker-compose-images-arm7.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images-arm7.yml && curl -o docker-compose-traefik.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-traefik.yml && curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-images-arm7.yml pull && sudo docker-compose -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-images-arm7.yml -f docker-compose-watchtower.yml up
+      curl -o traefik.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/traefik.yml && curl -o docker-compose-images-arm7.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-images-arm7.yml && curl -o docker-compose-traefik.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-traefik.yml && curl -o docker-compose-env.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-env.yml && curl -o docker-compose-watchtower.yml https://raw.githubusercontent.com/Ar-Kareem/pdf-mobile-integration/master/docker-compose-watchtower.yml && sudo docker-compose -f docker-compose-images-arm7.yml pull
+
+Run:
+
+      sudo docker-compose -f docker-compose-traefik.yml -f docker-compose-env.yml -f docker-compose-images-arm7.yml -f docker-compose-watchtower.yml up
