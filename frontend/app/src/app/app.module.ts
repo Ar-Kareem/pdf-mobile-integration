@@ -18,6 +18,8 @@ import { AuthEffects } from '@modules/auth/auth.effects';
 import { PdfComponent } from '@modules/pdf/pdf.component';
 import { HeaderComponent } from '@modules/header/header.component';
 import { PdfSidebarComponent } from './modules/pdf/pdf-sidebar/pdf-sidebar/pdf-sidebar.component';
+import { FormsModule } from '@angular/forms';
+import { pdfFeatureKey, pdfReducer } from '@modules/pdf/pdf.reducer';
 
 @NgModule({
   declarations: [
@@ -28,13 +30,15 @@ import { PdfSidebarComponent } from './modules/pdf/pdf-sidebar/pdf-sidebar/pdf-s
   ],
   imports: [
     StoreModule.forRoot({ 
-      [authFeatureKey]: authReducer,
       [appFeatureKey]: appReducer,
+      [authFeatureKey]: authReducer,
+      [pdfFeatureKey]: pdfReducer,
     }),
     EffectsModule.forRoot([
       AuthEffects, 
     ]),
     BrowserModule,
+    FormsModule,
     BrowserAnimationsModule, // required to make sidebar work
     HttpClientModule,
     AppRoutingModule,

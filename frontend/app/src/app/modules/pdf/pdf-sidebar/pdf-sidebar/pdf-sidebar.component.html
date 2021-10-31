@@ -1,7 +1,7 @@
 <p-sidebar [(visible)]="display" position="right">
     <div class="main-container">
         <div class="inner-container">
-            <input type="PDF URL..." pInputText/>
+            <input type="PDF URL..." pInputText [(ngModel)]="pdfUrl"/>
             <p-button class=".default-child" label="Load" (onClick)="onLoadPdfUrl()"></p-button>
         </div>
 
