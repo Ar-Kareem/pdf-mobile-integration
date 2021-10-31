@@ -9,7 +9,7 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./pdf-sidebar.component.scss']
 })
 export class PdfSidebarComponent implements OnInit {
-  display: boolean = false;
+  display: boolean = true;
 
   constructor(
     private store: Store,

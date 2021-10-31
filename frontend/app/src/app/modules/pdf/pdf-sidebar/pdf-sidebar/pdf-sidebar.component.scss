@@ -1,0 +1,26 @@
+div.main-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap; // default
+    // flex-flow: column nowrap; // shorthand of above two properties
+    justify-content: flex-start; // default
+    align-items: stretch; // default - need to look into this more
+    // align-content: flex-start; // not used with nowrap
+    gap: 5px 100px; // row gap, column gap, gap between items
+}
+div.inner-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; // default
+    // flex-flow: column nowrap; // shorthand of above two properties
+    justify-content: center; // default
+    align-items: stretch; // default - need to look into this more
+    // align-content: flex-start; // not used with nowrap
+    gap: 5px 5px; // row gap, column gap, gap between items
+}
+
+.default-child {
+    order: 0; // default 
+    flex: 0 1 auto; // default - shorthand for flex-grow, flex-shrink, and flex-basis
+    align-self: auto; // default - overwrides parent align-item if needed
+}
