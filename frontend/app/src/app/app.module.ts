@@ -1,26 +1,30 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
+import { SidebarModule } from 'primeng/sidebar';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { appFeatureKey, appReducer } from './app.reducer';
 import { AuthService } from '@modules/auth/auth.service';
 import { PdfService } from '@modules/pdf/pdf.service';
 import { authFeatureKey, authReducer } from '@modules/auth/auth.reducer';
 import { AuthEffects } from '@modules/auth/auth.effects';
 import { PdfComponent } from '@modules/pdf/pdf.component';
-import { HeaderComponent } from './modules/header/header.component';
-import { appFeatureKey, appReducer } from './app.reducer';
+import { HeaderComponent } from '@modules/header/header.component';
+import { PdfSidebarComponent } from './modules/pdf/pdf-sidebar/pdf-sidebar/pdf-sidebar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PdfComponent,
     HeaderComponent,
+    PdfSidebarComponent,
   ],
   imports: [
     StoreModule.forRoot({ 
@@ -31,9 +35,11 @@ import { appFeatureKey, appReducer } from './app.reducer';
       AuthEffects, 
     ]),
     BrowserModule,
+    BrowserAnimationsModule, // required to make sidebar work
     HttpClientModule,
     AppRoutingModule,
     ButtonModule,
+    SidebarModule,
     PdfViewerModule,
   ],
   providers: [

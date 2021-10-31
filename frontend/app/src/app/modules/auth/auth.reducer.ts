@@ -14,6 +14,7 @@ const logOutSuccess = createAction('[Auth Action] logOutSuccess');
 const logOutFailed = createAction('[Auth Action] logOutFailed');
 
 const toggleHeaderVisibility = createAction('[Auth Action] toggleHeaderVisibility');
+const menuButtonPressed = createAction('[Auth Action] menuButtonPressed');
 
 export const authActions = {
   fetchUserAttempted,
@@ -23,6 +24,7 @@ export const authActions = {
   logOutSuccess,
   logOutFailed,
   toggleHeaderVisibility,
+  menuButtonPressed,
 };
 
 
@@ -54,6 +56,7 @@ export const authReducer = createReducer(
   on(logOutFailed, (state, ) => ({...state, action: logOutFailed.type, user: null})),
 
   on(toggleHeaderVisibility, (state, ) => ({...state, action: toggleHeaderVisibility.type, headerVisibility: !state.headerVisibility})),
+  on(menuButtonPressed, (state, ) => ({...state, action: menuButtonPressed.type})),
 );
 
 

@@ -55,6 +55,10 @@ export class HeaderComponent implements OnInit {
     this.store.select(authSelectors.selectHeaderVisibility).subscribe(status => {this.headerVisibility = status})
   }
 
+  onMenuButtonPressed() {
+    this.store.dispatch(authActions.menuButtonPressed());
+  }
+
   async login() {
     this.store.dispatch(authActions.fetchUserAttempted());
     const userStatus = (await this.authService.auth().toPromise()).is_authenticated;
