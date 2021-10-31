@@ -1,5 +1,9 @@
 <p-sidebar [(visible)]="display" position="right">
     <div class="main-container">
+        <div class="inner-container">
+            <input type="PDF URL..." pInputText/>
+            <p-button class=".default-child" label="Load" (onClick)="onLoadPdfUrl()"></p-button>
+        </div>
 
         <span>TEST A</span>
         <div class="inner-container">
@@ -10,7 +14,7 @@
             <p-button label="1-5" class=".default-child"></p-button>
             <p-button label="1-6" class=".default-child"></p-button>
         </div>
-        <span>TEST A</span>
+        <span>TEST B</span>
         <div class="inner-container">
             <p-button label="2-1" class=".default-child"></p-button>
             <p-button label="2-2" class=".default-child"></p-button>
@@ -19,7 +23,7 @@
             <p-button label="2-5" class=".default-child"></p-button>
             <p-button label="2-6" class=".default-child"></p-button>
         </div>
-        <span>TEST A</span>
+        <span>TEST C</span>
         <div class="inner-container">
             <p-button label="3-1" class=".default-child"></p-button>
             <p-button label="3-2" class=".default-child"></p-button>

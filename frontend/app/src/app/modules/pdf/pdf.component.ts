@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { authActions, authSelectors } from '@modules/auth/auth.reducer';
 import { Store } from '@ngrx/store';
 import { getDefaultApplicationManifest, setGlobalApplicationManifest } from 'src/app/app.manifest';
+import { pdfSelectors } from './pdf.reducer';
 import { PdfService } from './pdf.service';
 
 @Component({
@@ -35,6 +36,14 @@ export class PdfComponent implements OnInit {
 
   private initStore() {
     this.store.select(authSelectors.selectHeaderVisibility).subscribe(status => {this.toolbarOpen = status})
+    
+    this.store.select(pdfSelectors.selectLoadedPdfUrl).subscribe(url => {
+      console.log('URL', url);
+      
+      if (url !== null) {
+        this.pdf.src = url
+      }
+    })
   }
 
   onClickPdfViewer(event: MouseEvent) {

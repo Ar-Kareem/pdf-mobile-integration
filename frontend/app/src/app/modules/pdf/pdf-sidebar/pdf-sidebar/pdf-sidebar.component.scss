@@ -11,12 +11,12 @@ div.main-container {
 div.inner-container {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap; // default
-    // flex-flow: column nowrap; // shorthand of above two properties
-    justify-content: center; // default
-    align-items: stretch; // default - need to look into this more
-    // align-content: flex-start; // not used with nowrap
-    gap: 5px 5px; // row gap, column gap, gap between items
+    flex-wrap: wrap;
+    // flex-flow: column nowrap;
+    justify-content: center;
+    align-items: stretch;
+    // align-content: flex-start;
+    gap: 5px 5px;
 }
 
 .default-child {
