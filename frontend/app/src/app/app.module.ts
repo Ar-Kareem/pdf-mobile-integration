@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
 import { StoreModule } from '@ngrx/store';
@@ -20,6 +20,7 @@ import { HeaderComponent } from '@modules/header/header.component';
 import { PdfSidebarComponent } from './modules/pdf/pdf-sidebar/pdf-sidebar/pdf-sidebar.component';
 import { FormsModule } from '@angular/forms';
 import { pdfFeatureKey, pdfReducer } from '@modules/pdf/pdf.reducer';
+import { HttpErrorInterceptor } from '@services/HttpErrorInterceptor';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,11 @@ import { pdfFeatureKey, pdfReducer } from '@modules/pdf/pdf.reducer';
   providers: [
     AuthService,
     PdfService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor, 
+      multi: true 
+    },
   ],
   bootstrap: [AppComponent]
 })
