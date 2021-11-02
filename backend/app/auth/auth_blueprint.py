@@ -5,8 +5,7 @@ from flask_login import current_user
 from flask_login.mixins import AnonymousUserMixin
 from flask_login.utils import login_required, logout_user
 
-from backend.app.auth.User import User
-
+from .User import User
 from .auth_service_google import google_login, google_after_login_redirect
 
 
