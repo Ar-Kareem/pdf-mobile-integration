@@ -13,22 +13,22 @@ from .auth_service_google import google_login, google_after_login_redirect
 logger = logging.getLogger(__name__)
 
 bp = Blueprint('auth_blueprint', __name__)
+current_user: Union[User, AnonymousUserMixin]
 
 
 @bp.route("/", methods=['GET', 'POST'])
 def get_user():
-    user: Union[User, AnonymousUserMixin] = current_user
-    if user.is_authenticated:
+    if current_user.is_authenticated and isinstance(current_user, User):
         return {
-            'given_name': user.given_name,
-            'family_name': user.family_name,
-            'email': user.email,
-            'picture': user.picture,
-            'is_authenticated': user.is_authenticated,
+            'given_name': current_user.given_name,
+            'family_name': current_user.family_name,
+            'email': current_user.email,
+            'picture': current_user.picture,
+            'is_authenticated': current_user.is_authenticated,
         }
     else:
         return {
-            'is_authenticated': user.is_authenticated,
+            'is_authenticated': current_user.is_authenticated,
             'given_name': None,
             'family_name': None,
             'email': None,
@@ -50,6 +50,7 @@ def after_auth():
     # Get authorization code Google sent back to you
     user_code = request.args.get("code")
     return google_after_login_redirect(user_code)
+
 
 @bp.route('/logout', methods=['POST'])
 @login_required
