@@ -82,17 +82,17 @@ export class PdfComponent implements OnInit {
   }
 
 
-  private async download() {
-    const result = await this.pdfService.download('https://arxiv.org/pdf/1905.11397.pdf').toPromise()
-    console.log(result);
-  }
+  // private async download(url='https://arxiv.org/pdf/1905.11397.pdf') {
+  //   const result = await this.pdfService.download(url).toPromise()
+  //   console.log(result);
+  // }
 
-  private async last_saved() {
-    const result = await this.pdfService.last_saved().toPromise()
-    this.pdf.src = result.last_saved_pdf
-    this.pdf.available = true;
-    this.changeDetectorRef.detectChanges();
-    console.log(result);
-  }
+  // private async last_saved() {
+  //   const result = await this.pdfService.last_saved().toPromise()
+  //   this.pdf.src = result.last_saved_pdf
+  //   this.pdf.available = true;
+  //   this.changeDetectorRef.detectChanges();
+  //   console.log(result);
+  // }
 
 }

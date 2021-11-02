@@ -7,21 +7,37 @@ import { BaseService } from '@services/base.service';
 @Injectable()
 export class PdfService extends BaseService {
 
-  private controllerAPI = this.BASE_API + 'auth/';
-
   protected readonly API = {
-    DOWNLOAD: this.PDF_API + 'download',
-    LAST_SAVED: this.PDF_API + 'last_saved',
+    request: this.PDF_API + 'request',
+    get_all_request: this.PDF_API + 'get_all_request',
+    download: this.PDF_API + 'download',
+    progress: this.PDF_API + 'progress',
+    retreive: this.PDF_API + 'retreive',
   }
 
-  constructor(private http: HttpClient) { super() }
-
-  download(url: string) {
-    return this.http.post<any>(this.API.DOWNLOAD, {url}, this.httpOptions)
+  constructor(private http: HttpClient) {
+    super();
+    (window as any)['PdfService'] = this;
   }
 
-  last_saved() {
-    return this.http.post<any>(this.API.LAST_SAVED, {}, this.httpOptions)
+  create_request() {
+    return this.http.post<any>(this.API.request, {}, this.httpOptions)
+  }
+
+  get_all_request() {
+    return this.http.post<any>(this.API.get_all_request, {}, this.httpOptions)
+  }
+
+  download(req: string, url: string) {
+    return this.http.post<any>(this.API.download, {url, req}, this.httpOptions)
+  }
+
+  progress(req: string[]) {
+    return this.http.post<any>(this.API.progress, {req}, this.httpOptions)
+  }
+
+  retreive(req: string) {
+    return this.http.get<any>(this.API.retreive + '/' + req, this.httpOptions)
   }
 
 }
