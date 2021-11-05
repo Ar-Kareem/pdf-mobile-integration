@@ -34,7 +34,7 @@ class PdfRequest:
             'url': self.url,
             'len': self.len,
             'done': self.done,
-            'result': self.result,
+            'result': self.result.decode("utf-8") if self.result is not None else None,
             'given_name': self.given_name,
             }
 
