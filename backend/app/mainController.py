@@ -9,7 +9,7 @@ from .pdf.pdf_blueprint import bp as pdf_bp
 app = Flask(__name__)
 
 with app.app_context():
-    setup_app()  # setup logger, login_manager, etc.
+    setup_app(app)
 
 
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
