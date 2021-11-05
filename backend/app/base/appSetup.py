@@ -47,17 +47,21 @@ def __init_logger():
     warn_file_handler = logging.FileHandler(filename='logs/logs_warn.log')
     warn_file_handler.setLevel(logging.WARN)
     warn_file_handler.setFormatter(formatter)
+    info_file_handler = logging.FileHandler(filename='logs/logs_info.log')
+    info_file_handler.setLevel(logging.INFO)
+    info_file_handler.setFormatter(formatter)
     debug_file_handler = logging.FileHandler(filename='logs/logs_debug.log')
     debug_file_handler.setLevel(logging.DEBUG)
     debug_file_handler.setFormatter(formatter)
     stderr_handler = logging.StreamHandler(sys.stderr)
-    stderr_handler.setLevel(logging.DEBUG)
+    stderr_handler.setLevel(logging.INFO)
     stderr_handler.setFormatter(formatter)
     # add handlers to the logger
     my_root = logging.getLogger('app')
     my_root.setLevel(logging.DEBUG)
     my_root.propagate = False
     my_root.addHandler(warn_file_handler)
+    my_root.addHandler(info_file_handler)
     my_root.addHandler(debug_file_handler)
     my_root.addHandler(stderr_handler)
 
