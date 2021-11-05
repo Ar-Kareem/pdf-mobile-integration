@@ -17,7 +17,7 @@ import { authFeatureKey, authReducer } from '@modules/auth/auth.reducer';
 import { AuthEffects } from '@modules/auth/auth.effects';
 import { PdfComponent } from '@modules/pdf/pdf.component';
 import { HeaderComponent } from '@modules/header/header.component';
-import { PdfSidebarComponent } from './modules/pdf/pdf-sidebar/pdf-sidebar/pdf-sidebar.component';
+import { PdfSidebarComponent } from './modules/pdf/pdf-sidebar/pdf-sidebar.component';
 import { FormsModule } from '@angular/forms';
 import { pdfFeatureKey, pdfReducer } from '@modules/pdf/pdf.reducer';
 import { HttpErrorInterceptor } from '@services/HttpErrorInterceptor';
