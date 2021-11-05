@@ -48,32 +48,24 @@ export const pdfReducer = createReducer(
 // SELECTORS
 
 export const pdfFeatureKey = 'pdfFeatureKey';
-const selectpdfState = createFeatureSelector<pdfState>(pdfFeatureKey);
+export const selectpdfState = createFeatureSelector<pdfState>(pdfFeatureKey);
 
-const selectLoadedPdfUrl = createSelector(
+export const selectLoadedPdfUrl = createSelector(
   selectpdfState,
   (state) => state.loadedPdfUrl
 );
 
-const selectPdfLoadstatus = createSelector(
+export const selectPdfLoadstatus = createSelector(
   selectpdfState,
   (state) => state.pdfLoadStatus
 );
 
-const selectHeaderVisibility = createSelector(
+export const selectHeaderVisibility = createSelector(
   selectpdfState,
   (state) => state.loadedPdfUrl
 );
 
-const selectPdfStorageId = createSelector(
+export const selectPdfStorageId = createSelector(
   selectpdfState,
   (state) => state.pdfStorageId
 );
-
-export const pdfSelectors = {
-  selectpdfState,
-  selectHeaderVisibility,
-  selectLoadedPdfUrl,
-  selectPdfLoadstatus,
-  selectPdfStorageId,
-}
