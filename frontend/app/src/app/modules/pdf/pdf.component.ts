@@ -65,7 +65,7 @@ export class PdfComponent implements OnInit, OnDestroy {
     .subscribe(status => {
       this.toolbarOpen = status;
     });
-    
+
     this.store.select(pdfSelectors.selectLoadedPdfUrl)
     .pipe(takeUntil(this.destroyed$))
     .subscribe(url => {
@@ -78,6 +78,14 @@ export class PdfComponent implements OnInit, OnDestroy {
         }
       }
     });
+
+    this.store.select(authSelectors.selectUser)
+    .pipe(takeUntil(this.destroyed$))
+    .subscribe(user => {
+      if (!!user && !!this.pdf.src && !this.pdf.loaded) { // signed in user changed and pdf did not load
+        this.setPdfUrl(this.pdf.src); // reload pdf
+      }
+    })
   }
 
   onClickPdfViewer(event: MouseEvent) {
