@@ -1,12 +1,15 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { authActions, authSelectors } from '@modules/auth/auth.reducer';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { getDefaultApplicationManifest, setGlobalApplicationManifest } from 'src/app/app.manifest';
+import { environment } from 'src/environments/environment';
 import { pdfActions, pdfSelectors } from './pdf.reducer';
 import { PdfService } from './pdf.service';
+import { PdfStorageUtils } from './session/pdf-storage-utils';
 
 @Component({
   selector: 'app-pdf',
@@ -15,6 +18,7 @@ import { PdfService } from './pdf.service';
 })
 export class PdfComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<boolean>();
+  sessId: string|null = null;
 
   pdf: {
     src: string,
@@ -29,36 +33,49 @@ export class PdfComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     private pdfService: PdfService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-    (window as any)['PdfComponent'] = this
+    if (!environment.production) {
+      (window as any)['PdfStorageUtils'] = PdfStorageUtils;
+      (window as any)['PdfComponent'] = this
+    }
     this.setupManifest();
     this.initStore();
 
-    const sessionUrl = sessionStorage.getItem('pdfsrc')
-    if (sessionUrl) {
-      this.pdf.src = sessionUrl
-      console.log('RESTORED', sessionUrl);
-    }
+    setTimeout(() => {
+      this.sessId = PdfStorageUtils.getSessionIdAndSync(this.router, this.route);
+      this.store.dispatch(pdfActions.setPdfStorageId({id: this.sessId}));
+
+      const sess = PdfStorageUtils.getSessionFromStorage(this.sessId);
+      if (!!sess.url) {
+        this.store.dispatch(pdfActions.loadPdfFromUrl({url: sess.url}));
+      }
+    }, 0);
   }
 
   private initStore() {
     this.store.select(authSelectors.selectHeaderVisibility)
     .pipe(takeUntil(this.destroyed$))
     .subscribe(status => {
-      this.toolbarOpen = status
-    })
+      this.toolbarOpen = status;
+    });
     
     this.store.select(pdfSelectors.selectLoadedPdfUrl)
     .pipe(takeUntil(this.destroyed$))
     .subscribe(url => {
       if (url !== null) {
-        this.pdf.src = url
-        sessionStorage.setItem('pdfsrc', url);
+        this.pdf.src = url;
+        if (!!this.sessId) {
+          const session = PdfStorageUtils.getSessionFromStorage(this.sessId);
+          session.url = url;
+          PdfStorageUtils.setSessionToStorage(session);
+        }
       }
-    })
+    });
   }
 
   onClickPdfViewer(event: MouseEvent) {
