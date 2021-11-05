@@ -18,10 +18,11 @@ def get_user_requests():
 
 
 def download(req: str, url: str):
-    if not pdf_mapper.is_valid_request(req):
+    model = pdf_mapper.get_request(req)
+    if not model:
         raise ServerError(publicMessage='Invalid Request Parameter')
 
-    if pdf_mapper.get_request(req).url is not None:
+    if model.url is not None:
         raise ServerError(publicMessage='Request Already occupied by a download')
 
     pdf_mapper.set_request_url(req, url)
@@ -54,15 +55,15 @@ def get_progress(req_list: List[str]):
 
 
 def _get_progress_single(req: str):
-    if not pdf_mapper.is_valid_request(req):
+    model = pdf_mapper.get_request(req)
+    if not model:
         raise ServerError(publicMessage='Invalid Request Parameter')
-
-    reqObj = pdf_mapper.get_request(req)
-    return reqObj.done, reqObj.len
+    return model.done, model.len
 
 
 def retreive(req: str):
-    if not pdf_mapper.is_valid_request(req):
+    model = pdf_mapper.get_request(req)
+    if not model:
         raise ServerError(publicMessage='Invalid Request Parameter')
 
-    return pdf_mapper.get_request(req).result
+    return model.result

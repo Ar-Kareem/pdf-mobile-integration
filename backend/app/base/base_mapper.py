@@ -39,15 +39,16 @@ def init_db():
     db_versions = [int(v[0]) for v in db_versions if len(v) > 0]
 
     if len(db_versions) == 0:  # no db exists
-        logger.info('Creating fresh db')
-        db = get_db()
-        _create_tables(db, _CURRENT_DB_VERSION)
+        logger.info('No DB Found, Creating fresh one.')
     else:  # 1 or more db exists
         if max(db_versions) > _CURRENT_DB_VERSION:
             logger.error('Database Exists on file that is larger than the current app DB version. This should not be possible')
         if _CURRENT_DB_VERSION not in db_versions:
             db_versions = [v for v in db_versions if v <= _CURRENT_DB_VERSION]  # filter versions larger than current just in case
             _upgrade_db(from_version=max(db_versions), to_version=_CURRENT_DB_VERSION)
+
+    db = get_db()
+    _create_tables(db, _CURRENT_DB_VERSION)
 
 
 def _create_tables(db, version):
@@ -62,12 +63,22 @@ def _create_tables(db, version):
                     picture TEXT
                 );
         '''
+        db.executescript(sql)
+        sql = '''
+            CREATE TABLE IF NOT EXISTS pdf (
+                    request_id TEXT PRIMARY KEY,
+                    user INTEGER NOT NULL,
+                    given_name TEXT,
+                    url TEXT,
+                    len INTEGER,
+                    done INTEGER,
+                    result BLOB
+                );
+        '''
+        db.executescript(sql)
     else:
-        sql = ''
         logger.critical(f'Do not know how to create tables for version {version}.')
         raise ValueError(f'Do not know how to create tables for version {version}.')
-
-    db.executescript(sql)
 
 
 def _upgrade_db(from_version: int, to_version: int):
