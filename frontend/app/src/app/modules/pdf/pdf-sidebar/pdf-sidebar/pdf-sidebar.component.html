@@ -1,8 +1,17 @@
 <p-sidebar [(visible)]="display" position="right">
     <div class="main-container">
         <div class="inner-container">
-            <input type="PDF URL..." pInputText [(ngModel)]="pdfUrl"/>
-            <p-button class=".default-child" label="Load" (onClick)="onLoadPdfUrl()"></p-button>
+            <input type="PDF URL..." pInputText [(ngModel)]="pdfUrlLoad"/>0
+            <p-button class=".default-child" label="Load" (onClick)="onClickLoadPdfUrl()"></p-button>
+        </div>
+
+        <div class="inner-container">
+            <input type="PDF URL..." pInputText [(ngModel)]="pdfUrlDownload"/>
+            <p-button class=".default-child" label="Download" (onClick)="onClickDownloadPdfUrl()"></p-button>
+        </div>
+
+        <div class="inner-container" *ngFor="let pdf of validPdfs">
+            <p-button class=".default-child" label="{{pdf.percent}}%" (onClick)="onClickLoadedPdf(pdf)"></p-button>
         </div>
 
         <span>TEST A</span>

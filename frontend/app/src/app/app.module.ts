@@ -21,6 +21,7 @@ import { PdfSidebarComponent } from './modules/pdf/pdf-sidebar/pdf-sidebar/pdf-s
 import { FormsModule } from '@angular/forms';
 import { pdfFeatureKey, pdfReducer } from '@modules/pdf/pdf.reducer';
 import { HttpErrorInterceptor } from '@services/HttpErrorInterceptor';
+import { PdfEffects } from '@modules/pdf/pdf.effects';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { HttpErrorInterceptor } from '@services/HttpErrorInterceptor';
       [pdfFeatureKey]: pdfReducer,
     }),
     EffectsModule.forRoot([
-      AuthEffects, 
+      AuthEffects,
+      PdfEffects,
     ]),
     BrowserModule,
     FormsModule,
