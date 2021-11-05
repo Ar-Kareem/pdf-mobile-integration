@@ -1,25 +1,16 @@
-import { Action, createAction, createFeatureSelector, createReducer, createSelector, on, props } from '@ngrx/store';
+import { createAction, createFeatureSelector, createReducer, createSelector, on, props } from '@ngrx/store';
 
 
 // ACTIONS
 
-const loadPdfFromUrl = createAction('[PDF Action] loadPdfFromUrl', props<{url: string}>());
-const setPdfLoadStatus = createAction('[PDF Action] setPdfLoadStatus', props<{status: string|null}>());
+export const loadPdfFromUrl = createAction('[PDF Action] loadPdfFromUrl', props<{url: string}>());
+export const setPdfLoadStatus = createAction('[PDF Action] setPdfLoadStatus', props<{status: string|null}>());
 
-const downloadPdfAttempted = createAction('[PDF Action] downloadPdfAttempted', props<{url: string}>());
-const downloadPdfSuccess = createAction('[PDF Action] downloadPdfSuccess', props<{req: string}>());
-const downloadPdfFailed = createAction('[PDF Action] downloadPdfFailed');
+export const downloadPdfAttempted = createAction('[PDF Action] downloadPdfAttempted', props<{url: string}>());
+export const downloadPdfSuccess = createAction('[PDF Action] downloadPdfSuccess', props<{req: string}>());
+export const downloadPdfFailed = createAction('[PDF Action] downloadPdfFailed');
 
-const setPdfStorageId = createAction('[PDF Action] setPdfStorageId', props<{id: string}>())
-
-export const pdfActions = {
-  loadPdfFromUrl,
-  setPdfLoadStatus,
-  downloadPdfAttempted,
-  downloadPdfSuccess,
-  downloadPdfFailed,
-  setPdfStorageId,
-};
+export const setPdfStorageId = createAction('[PDF Action] setPdfStorageId', props<{id: string}>())
 
 
 // STATE

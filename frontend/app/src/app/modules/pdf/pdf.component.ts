@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { authActions, authSelectors } from '@modules/auth/auth.reducer';
+import { authSelectors, toggleHeaderVisibility } from '@modules/auth/auth.reducer';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { getDefaultApplicationManifest, setGlobalApplicationManifest } from 'src/app/app.manifest';
 import { environment } from 'src/environments/environment';
-import { pdfActions, pdfSelectors } from './pdf.reducer';
+import { loadPdfFromUrl, pdfSelectors, setPdfLoadStatus, setPdfStorageId } from './pdf.reducer';
 import { PdfService } from './pdf.service';
 import { PdfStorageUtils } from './session/pdf-storage-utils';
 
@@ -53,11 +53,11 @@ export class PdfComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       this.sessId = PdfStorageUtils.getSessionIdAndSync(this.router, this.route);
-      this.store.dispatch(pdfActions.setPdfStorageId({id: this.sessId}));
+      this.store.dispatch(setPdfStorageId({id: this.sessId}));
 
       const sess = PdfStorageUtils.getSessionFromStorage(this.sessId);
       if (!!sess.url) {
-        this.store.dispatch(pdfActions.loadPdfFromUrl({url: sess.url}));
+        this.store.dispatch(loadPdfFromUrl({url: sess.url}));
       }
     }, 0);
   }
@@ -93,7 +93,7 @@ export class PdfComponent implements OnInit, OnDestroy {
 
   onClickPdfViewer(event: MouseEvent) {
     if (event.detail == 2) {
-      this.store.dispatch(authActions.toggleHeaderVisibility());
+      this.store.dispatch(toggleHeaderVisibility());
     }
     if (event.detail == 3) {
       this.toggleFullScreen();
@@ -135,12 +135,12 @@ export class PdfComponent implements OnInit, OnDestroy {
       this.changeDetectorRef.detectChanges();
 
       this.pdf.available = true;
-      this.store.dispatch(pdfActions.setPdfLoadStatus({status: 'Loading...'}))
+      this.store.dispatch(setPdfLoadStatus({status: 'Loading...'}))
 
     } else {
       this.pdf.available = false;
       this.pdf.src = '';
-      this.store.dispatch(pdfActions.setPdfLoadStatus({status: 'No PDF'}))
+      this.store.dispatch(setPdfLoadStatus({status: 'No PDF'}))
     }
     this.pdf.loaded = false;
   }
@@ -158,7 +158,7 @@ export class PdfComponent implements OnInit, OnDestroy {
   pdf_viewer_on_progress(event: any) {
     if (!!event.loaded && !!event.total) {
       const status = Math.floor(100 * event.loaded/event.total) + '%'
-      this.store.dispatch(pdfActions.setPdfLoadStatus({status: status}))
+      this.store.dispatch(setPdfLoadStatus({status: status}))
     }
     this.pdf.loaded = false;
     console.log('pdf_viewer_on_progress', event);
@@ -166,13 +166,13 @@ export class PdfComponent implements OnInit, OnDestroy {
 
   pdf_viewer_error(event: any) {
     console.log('pdf_viewer_error', event);
-    this.store.dispatch(pdfActions.setPdfLoadStatus({status: 'PDF Load Error!'}))
+    this.store.dispatch(setPdfLoadStatus({status: 'PDF Load Error!'}))
     this.pdf.loaded = false;
   }
 
   pdf_viewer_after_load_complete(event: any) {
     console.log('pdf_viewer_after_load_complete', event);
-    this.store.dispatch(pdfActions.setPdfLoadStatus({status: null}))
+    this.store.dispatch(setPdfLoadStatus({status: null}))
     this.pdf.loaded = true;
     if (this.sessId) {
       const session = PdfStorageUtils.getSessionFromStorage(this.sessId);

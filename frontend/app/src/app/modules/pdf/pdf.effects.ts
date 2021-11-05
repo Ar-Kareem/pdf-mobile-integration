@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
-import { pdfActions } from "./pdf.reducer";
+import { downloadPdfAttempted, downloadPdfFailed, downloadPdfSuccess } from "./pdf.reducer";
 import { PdfService } from "./pdf.service";
 
 
@@ -15,7 +15,7 @@ export class PdfEffects {
   ) {}
 
   downloadPdf$ = createEffect(() => this.actions$.pipe(
-    ofType(pdfActions.downloadPdfAttempted),
+    ofType(downloadPdfAttempted),
     switchMap((action) => this.pdfService.create_request()
       .pipe(
         map(result => {
@@ -24,9 +24,9 @@ export class PdfEffects {
           setTimeout(async () => {
             await this.pdfService.download(reqID, action.url).toPromise()
           }, 0);
-          return pdfActions.downloadPdfSuccess({req: reqID});
+          return downloadPdfSuccess({req: reqID});
         },
-        catchError(() => of(pdfActions.downloadPdfFailed())),
+        catchError(() => of(downloadPdfFailed())),
       ))
     )
   ));
