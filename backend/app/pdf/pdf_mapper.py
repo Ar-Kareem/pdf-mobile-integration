@@ -29,7 +29,9 @@ def is_valid_request(req: str):
 
 
 def create_request():
-    req = base64.b64encode(os.urandom(10)).decode('ascii')
+    req = base64.b64encode(os.urandom(9)).decode('ascii')
+    req = req.replace('/', '_')  # / is a subdelim in url, replace with unreserved char
+    req = req.replace('+', '-')  # + is a subdelim in url, replace with unreserved char
     new_req = PdfRequest()
     new_req.request_id = req
     new_req.user = current_user.id
