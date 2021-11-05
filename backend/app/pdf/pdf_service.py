@@ -21,10 +21,10 @@ def download(req: str, url: str):
     if not pdf_mapper.is_valid_request(req):
         raise ServerError(publicMessage='Invalid Request Parameter')
 
-    if pdf_mapper.get_request(req).done is not None:
+    if pdf_mapper.get_request(req).url is not None:
         raise ServerError(publicMessage='Request Already occupied by a download')
 
-    pdf_mapper.set_request_done_size(req, -1)  # set done size to mark that download for this rquest started
+    pdf_mapper.set_request_url(req, url)
 
     with request.urlopen(url) as response:
         content_len = response.getheader('content-length')

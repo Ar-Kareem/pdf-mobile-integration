@@ -14,13 +14,7 @@ current_user: User
 def get_user_requests():
     user_requests = [pdfrequest for pdfrequest in temp_status_database.values() if pdfrequest.user == current_user.id]
     for i, r in enumerate(user_requests):
-        request_copy = PdfRequest()
-
-        request_copy.request_id = r.request_id
-        request_copy.user = r.user
-        request_copy.given_name = r.given_name
-        request_copy.len = r.len
-        request_copy.done = r.done
+        request_copy = PdfRequest.copy(r)
         request_copy.result = None
         user_requests[i] = request_copy
     return user_requests
@@ -49,6 +43,10 @@ def set_request_content_len(req: str, content_len: int):
 
 def set_request_done_size(req: str, done: int):
     temp_status_database[req].done = done
+
+
+def set_request_url(req: str, url: str):
+    temp_status_database[req].url = url
 
 
 def set_request_result(req: str, result: bytes):

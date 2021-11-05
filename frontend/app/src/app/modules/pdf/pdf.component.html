@@ -14,5 +14,8 @@
                 [original-size]="false"
                 [zoom-scale]="'page-width'"
                 (click)="onClickPdfViewer($event)"
+                (on-progress)="pdf_viewer_on_progress($event)"
+                (error)="pdf_viewer_error($event)"
+                (after-load-complete)="pdf_viewer_after_load_complete($event)"
     ></pdf-viewer>
 </div>
