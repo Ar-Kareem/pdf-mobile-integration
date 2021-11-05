@@ -5,8 +5,10 @@ import sys
 import os
 from pathlib import Path
 import atexit
+from typing import Callable
 
 from flask import current_app
+from flask.app import Flask
 from flask_login import LoginManager
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -76,11 +78,12 @@ def __init_logger():
     root.addHandler(stderr_handler)
 
 
-def __setup_chron_jobs():
+def __setup_chron_jobs(app: Flask):
 
-    def wrapper(func):  # wrap functions with app contect
+    def wrapper(func: Callable):  # wrap functions with app contect
         def wrapped_func():
-            with current_app.app_context():
+            with app.app_context():
+                logger.debug('running scheduled job: ' + func.__name__)
                 func()
         return wrapped_func
 
@@ -102,7 +105,7 @@ def __setup_chron_jobs():
 __init_done = False
 
 
-def setup_app():
+def setup_app(app: Flask):
     """Perform all essential setup. Should only be called once during application startup."""
     # Make sure init only called once
     global __init_done
@@ -112,7 +115,7 @@ def setup_app():
 
     __init_logger()
     __init_login_manager()
-    __setup_chron_jobs()
+    __setup_chron_jobs(app)
 
     init_db()
     current_app.teardown_appcontext(lambda _: close_db())
