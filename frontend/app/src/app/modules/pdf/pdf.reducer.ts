@@ -4,6 +4,7 @@ import { Action, createAction, createFeatureSelector, createReducer, createSelec
 // ACTIONS
 
 const loadPdfFromUrl = createAction('[PDF Action] loadPdfFromUrl', props<{url: string}>());
+const setPdfLoadStatus = createAction('[PDF Action] setPdfLoadStatus', props<{status: string|null}>());
 
 const downloadPdfAttempted = createAction('[PDF Action] downloadPdfAttempted', props<{url: string}>());
 const downloadPdfSuccess = createAction('[PDF Action] downloadPdfSuccess', props<{req: string}>());
@@ -13,6 +14,7 @@ const setPdfStorageId = createAction('[PDF Action] setPdfStorageId', props<{id: 
 
 export const pdfActions = {
   loadPdfFromUrl,
+  setPdfLoadStatus,
   downloadPdfAttempted,
   downloadPdfSuccess,
   downloadPdfFailed,
@@ -25,11 +27,13 @@ export const pdfActions = {
 export type pdfState = {
   action: string|null,
   loadedPdfUrl: string|null,
+  pdfLoadStatus: string|null,
   pdfStorageId: string|null,
 }
 const initialState: pdfState = {
   action: null,
   loadedPdfUrl: null,
+  pdfLoadStatus: null,
   pdfStorageId: null,
 };
 
@@ -40,6 +44,7 @@ export const pdfReducer = createReducer(
   initialState,
 
   on(loadPdfFromUrl, (state, { url }) => ({...state, action: loadPdfFromUrl.type, loadedPdfUrl: url})),
+  on(setPdfLoadStatus, (state, { status }) => ({...state, action: setPdfLoadStatus.type, pdfLoadStatus: status})),
 
   on(downloadPdfAttempted, (state) => ({...state, action: downloadPdfAttempted.type})),
   on(downloadPdfSuccess, (state) => ({...state, action: downloadPdfSuccess.type})),
@@ -59,6 +64,11 @@ const selectLoadedPdfUrl = createSelector(
   (state) => state.loadedPdfUrl
 );
 
+const selectPdfLoadstatus = createSelector(
+  selectpdfState,
+  (state) => state.pdfLoadStatus
+);
+
 const selectHeaderVisibility = createSelector(
   selectpdfState,
   (state) => state.loadedPdfUrl
@@ -73,5 +83,6 @@ export const pdfSelectors = {
   selectpdfState,
   selectHeaderVisibility,
   selectLoadedPdfUrl,
+  selectPdfLoadstatus,
   selectPdfStorageId,
 }

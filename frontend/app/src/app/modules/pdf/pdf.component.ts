@@ -21,11 +21,13 @@ export class PdfComponent implements OnInit, OnDestroy {
   sessId: string|null = null;
 
   pdf: {
+    available: boolean,
     src: string,
-    available: boolean
+    loaded: boolean,
   } = {
-    src: 'https://arxiv.org/pdf/1905.11397.pdf',
     available: true,
+    src: 'https://arxiv.org/pdf/1905.11397.pdf',
+    loaded: false,
   }
 
   toolbarOpen = true;
@@ -68,7 +70,7 @@ export class PdfComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.destroyed$))
     .subscribe(url => {
       if (url !== null) {
-        this.pdf.src = url;
+        this.setPdfUrl(url);
         if (!!this.sessId) {
           const session = PdfStorageUtils.getSessionFromStorage(this.sessId);
           session.url = url;
@@ -113,16 +115,36 @@ export class PdfComponent implements OnInit, OnDestroy {
     setGlobalApplicationManifest(manifestJSON)
   }
 
+  setPdfUrl(url: string) {
+    // need to set to empty string to make sure pdf component notices the change of url in case the url is the same as before
+    this.pdf.src = '';
+    this.changeDetectorRef.detectChanges();
+    this.pdf.src = url;
+    this.changeDetectorRef.detectChanges();
+
+    this.store.dispatch(pdfActions.setPdfLoadStatus({status: 'Loading...'}))
+    this.pdf.loaded = false;
+  }
+
   pdf_viewer_on_progress(event: any) {
+    if (!!event.loaded && !!event.total) {
+      const status = Math.floor(100 * event.loaded/event.total) + '%'
+      this.store.dispatch(pdfActions.setPdfLoadStatus({status: status}))
+    }
+    this.pdf.loaded = false;
     console.log('pdf_viewer_on_progress', event);
   }
 
   pdf_viewer_error(event: any) {
     console.log('pdf_viewer_error', event);
+    this.store.dispatch(pdfActions.setPdfLoadStatus({status: 'PDF Load Error!'}))
+    this.pdf.loaded = false;
   }
 
   pdf_viewer_after_load_complete(event: any) {
     console.log('pdf_viewer_after_load_complete', event);
+    this.store.dispatch(pdfActions.setPdfLoadStatus({status: null}))
+    this.pdf.loaded = true;
   }
 
   // private async download(url='https://arxiv.org/pdf/1905.11397.pdf') {
