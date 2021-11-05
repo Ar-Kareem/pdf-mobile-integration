@@ -3,16 +3,18 @@
 <app-pdf-sidebar></app-pdf-sidebar>
 
 <div *ngIf="!pdf.available == true">
-    <div>NO PDF??</div>
+    <div>No PDF Selected</div>
 </div>
 <div #container *ngIf="!!pdf.available == true" 
     style="position: relative; width: 100vw;" 
     [ngStyle]="{'height': !!toolbarOpen? 'calc(100vh - 60px)' : 'calc(100vh - 1px)'}"
     >
     <pdf-viewer [src]="pdf.src"
+                [(page)]="pdf.page"
                 [render-text]="true"
                 [original-size]="false"
                 [zoom-scale]="'page-width'"
+                (pageChange)="pdf_viewer_on_page_change($event)"
                 (click)="onClickPdfViewer($event)"
                 (on-progress)="pdf_viewer_on_progress($event)"
                 (error)="pdf_viewer_error($event)"

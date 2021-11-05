@@ -23,10 +23,12 @@ export class PdfComponent implements OnInit, OnDestroy {
   pdf: {
     available: boolean,
     src: string,
+    page: number,
     loaded: boolean,
   } = {
-    available: true,
-    src: 'https://arxiv.org/pdf/1905.11397.pdf',
+    available: false,
+    src: '',
+    page: 0,
     loaded: false,
   }
 
@@ -45,6 +47,7 @@ export class PdfComponent implements OnInit, OnDestroy {
       (window as any)['PdfStorageUtils'] = PdfStorageUtils;
       (window as any)['PdfComponent'] = this
     }
+    this.setPdfUrl(null);
     this.setupManifest();
     this.initStore();
 
@@ -82,7 +85,7 @@ export class PdfComponent implements OnInit, OnDestroy {
     this.store.select(authSelectors.selectUser)
     .pipe(takeUntil(this.destroyed$))
     .subscribe(user => {
-      if (!!user && !!this.pdf.src && !this.pdf.loaded) { // signed in user changed and pdf did not load
+      if (!!user && !!this.pdf.available && !this.pdf.loaded) { // signed in user changed and pdf did not load
         this.setPdfUrl(this.pdf.src); // reload pdf
       }
     })
@@ -123,16 +126,34 @@ export class PdfComponent implements OnInit, OnDestroy {
     setGlobalApplicationManifest(manifestJSON)
   }
 
-  setPdfUrl(url: string) {
-    // need to set to empty string to make sure pdf component notices the change of url in case the url is the same as before
-    this.pdf.src = '';
-    this.changeDetectorRef.detectChanges();
-    this.pdf.src = url;
-    this.changeDetectorRef.detectChanges();
+  setPdfUrl(url: string|null) {
+    if (!!url) {
+      // need to set to empty string to make sure pdf component notices the change of url in case the url is the same as before
+      this.pdf.src = '';
+      this.changeDetectorRef.detectChanges();
+      this.pdf.src = url;
+      this.changeDetectorRef.detectChanges();
 
-    this.store.dispatch(pdfActions.setPdfLoadStatus({status: 'Loading...'}))
+      this.pdf.available = true;
+      this.store.dispatch(pdfActions.setPdfLoadStatus({status: 'Loading...'}))
+
+    } else {
+      this.pdf.available = false;
+      this.pdf.src = '';
+      this.store.dispatch(pdfActions.setPdfLoadStatus({status: 'No PDF'}))
+    }
     this.pdf.loaded = false;
   }
+
+  pdf_viewer_on_page_change(num: number){
+    console.log(num);
+    if (!!this.sessId) {
+      const session = PdfStorageUtils.getSessionFromStorage(this.sessId);
+      session.page = num + '';
+      PdfStorageUtils.setSessionToStorage(session);
+    }
+  }
+
 
   pdf_viewer_on_progress(event: any) {
     if (!!event.loaded && !!event.total) {
@@ -153,6 +174,16 @@ export class PdfComponent implements OnInit, OnDestroy {
     console.log('pdf_viewer_after_load_complete', event);
     this.store.dispatch(pdfActions.setPdfLoadStatus({status: null}))
     this.pdf.loaded = true;
+    if (this.sessId) {
+      const session = PdfStorageUtils.getSessionFromStorage(this.sessId);
+      console.log(session);
+      setTimeout(() => {
+        if (this.pdf.src == session.url && parseInt(session.page) > 0) {
+          console.log(session.page);
+          this.pdf.page = parseInt(session.page)
+        }
+      }, 100);
+    }
   }
 
   // private async download(url='https://arxiv.org/pdf/1905.11397.pdf') {

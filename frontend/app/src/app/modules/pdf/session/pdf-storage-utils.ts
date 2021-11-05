@@ -1,14 +1,14 @@
 import { ActivatedRoute, Router } from "@angular/router";
 
 export class PdfStorageModel {
-  static readonly SESSION_VERSION = '0.1'; // stores the session version, in case any update to the session model, legacy models in user session is taken care of.
+  static readonly SESSION_VERSION = '0.2'; // stores the session version, in case any update to the session model, legacy models in user session is taken care of.
 
-  public version: string;
+  public version: string = PdfStorageModel.SESSION_VERSION;
   public sessionId: string;
   public url: string|null = null;
+  public page: string = '0';
 
   constructor(sessionId: string) {
-    this.version = PdfStorageModel.SESSION_VERSION;
     this.sessionId = sessionId;
   }
 }
@@ -83,7 +83,7 @@ export abstract class PdfStorageUtils {
 
   private static upgradePdfStorageModel(session: PdfStorageModel) {
     switch (session.sessionId) {
-      case '0.1':
+      case PdfStorageModel.SESSION_VERSION:
         console.log('Session is at the latest version.');
         return session;
       default:
