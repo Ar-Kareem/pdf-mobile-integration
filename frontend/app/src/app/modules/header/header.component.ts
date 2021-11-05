@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { User } from '@models/UserModel';
-import { authActions, authSelectors } from '@modules/auth/auth.reducer';
+import { authSelectors, fetchUserAttempted, logOutAttempted, menuButtonPressed } from '@modules/auth/auth.reducer';
 import { AuthService } from '@modules/auth/auth.service';
 import { appSelectors } from 'src/app/app.reducer';
 import { pdfSelectors } from '@modules/pdf/pdf.reducer';
@@ -47,22 +47,21 @@ export class HeaderComponent implements OnInit {
     });
     this.initStore();
     (window as any)['HeaderComponent'] = this;
-    (window as any)['authActions'] = authActions;
   }
 
   private initStore() {
-    this.store.dispatch(authActions.fetchUserAttempted());
+    this.store.dispatch(fetchUserAttempted());
     this.store.select(authSelectors.selectUser).subscribe(user => {this.user = user})
     this.store.select(authSelectors.selectHeaderVisibility).subscribe(status => {this.headerVisibility = status})
     this.store.select(pdfSelectors.selectPdfLoadstatus).subscribe(status => this.pdfLoadStatus = status);
   }
 
   onMenuButtonPressed() {
-    this.store.dispatch(authActions.menuButtonPressed());
+    this.store.dispatch(menuButtonPressed());
   }
 
   async login() {
-    this.store.dispatch(authActions.fetchUserAttempted());
+    this.store.dispatch(fetchUserAttempted());
     const userStatus = (await this.authService.auth().toPromise()).is_authenticated;
     if (!userStatus) { // user not logged in
       window.open('/api/auth/login');
@@ -70,7 +69,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.store.dispatch(authActions.logOutAttempted());
+    this.store.dispatch(logOutAttempted());
   }
 
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { authActions, authSelectors } from '@modules/auth/auth.reducer';
-import { pdfActions } from '@modules/pdf/pdf.reducer';
+import { authSelectors, menuButtonPressed } from '@modules/auth/auth.reducer';
 import { PdfService } from '@modules/pdf/pdf.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
+import { downloadPdfAttempted, downloadPdfSuccess, loadPdfFromUrl } from '@modules/pdf/pdf.reducer';
 
 @Component({
   selector: 'app-pdf-sidebar',
@@ -29,11 +29,11 @@ export class PdfSidebarComponent implements OnInit {
 
   private initStore() {
     this.store.select(authSelectors.selectAuthState)
-    .pipe(filter(state => state.action == authActions.menuButtonPressed.type))
+    .pipe(filter(state => state.action == menuButtonPressed.type))
     .subscribe(_ => this.display = !this.display)
 
     this.actions$.pipe(
-      ofType(pdfActions.downloadPdfSuccess.type),
+      ofType(downloadPdfSuccess.type),
     ).subscribe(({req}) => {
       console.log('DOWNLOAD:', req)
       this.keepLoading = true;
@@ -64,15 +64,15 @@ export class PdfSidebarComponent implements OnInit {
   }
 
   onClickLoadPdfUrl() {
-    this.store.dispatch(pdfActions.loadPdfFromUrl({url: this.pdfUrlLoad}));
+    this.store.dispatch(loadPdfFromUrl({url: this.pdfUrlLoad}));
   }
 
   onClickDownloadPdfUrl() {
-    this.store.dispatch(pdfActions.downloadPdfAttempted({url: this.pdfUrlDownload}));
+    this.store.dispatch(downloadPdfAttempted({url: this.pdfUrlDownload}));
   }
 
   onClickLoadedPdf(pdf: any) {
-    this.store.dispatch(pdfActions.loadPdfFromUrl({url: '/api/pdf/retreive/' + pdf.request_id}));
+    this.store.dispatch(loadPdfFromUrl({url: '/api/pdf/retreive/' + pdf.request_id}));
   }
 
 }

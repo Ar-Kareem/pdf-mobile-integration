@@ -5,27 +5,16 @@ import { User } from '@models/UserModel';
 
 // ACTIONS
 
-const fetchUserAttempted = createAction('[Auth Action] fetchUserAttempted');
-const fetchUserSuccess = createAction('[Auth Action] fetchUserSuccess', props<{user: User}>());
-const fetchUserFailed = createAction('[Auth Action] fetchUserFailed');
+export const fetchUserAttempted = createAction('[Auth Action] fetchUserAttempted');
+export const fetchUserSuccess = createAction('[Auth Action] fetchUserSuccess', props<{user: User}>());
+export const fetchUserFailed = createAction('[Auth Action] fetchUserFailed');
 
-const logOutAttempted = createAction('[Auth Action] logOutAttempted');
-const logOutSuccess = createAction('[Auth Action] logOutSuccess');
-const logOutFailed = createAction('[Auth Action] logOutFailed');
+export const logOutAttempted = createAction('[Auth Action] logOutAttempted');
+export const logOutSuccess = createAction('[Auth Action] logOutSuccess');
+export const logOutFailed = createAction('[Auth Action] logOutFailed');
 
-const toggleHeaderVisibility = createAction('[Auth Action] toggleHeaderVisibility');
-const menuButtonPressed = createAction('[Auth Action] menuButtonPressed');
-
-export const authActions = {
-  fetchUserAttempted,
-  fetchUserSuccess,
-  fetchUserFailed,
-  logOutAttempted,
-  logOutSuccess,
-  logOutFailed,
-  toggleHeaderVisibility,
-  menuButtonPressed,
-};
+export const toggleHeaderVisibility = createAction('[Auth Action] toggleHeaderVisibility');
+export const menuButtonPressed = createAction('[Auth Action] menuButtonPressed');
 
 
 // STATE

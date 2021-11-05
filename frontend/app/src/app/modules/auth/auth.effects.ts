@@ -4,7 +4,7 @@ import { AuthService } from "@modules/auth/auth.service";
 import { of } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
 
-import { authActions } from "./auth.reducer";
+import { fetchUserAttempted, fetchUserFailed, fetchUserSuccess, logOutAttempted, logOutFailed, logOutSuccess } from "./auth.reducer";
 
 @Injectable()
 export class AuthEffects {
@@ -15,21 +15,21 @@ export class AuthEffects {
   ) {}
 
   fetchUserAttempted$ = createEffect(() => this.actions$.pipe(
-    ofType(authActions.fetchUserAttempted),
+    ofType(fetchUserAttempted),
     switchMap(() => this.authService.auth()
       .pipe(
-        map(user => authActions.fetchUserSuccess({ user })),
-        catchError(() => of(authActions.fetchUserFailed())),
+        map(user => fetchUserSuccess({ user })),
+        catchError(() => of(fetchUserFailed())),
       ))
     )
   );
 
   logOutAttempted$ = createEffect(() => this.actions$.pipe(
-    ofType(authActions.logOutAttempted),
+    ofType(logOutAttempted),
     switchMap(() => this.authService.logout()
       .pipe(
-        map(() => authActions.logOutSuccess()),
-        catchError(() => of(authActions.logOutFailed())),
+        map(() => logOutSuccess()),
+        catchError(() => of(logOutFailed())),
       ))
     )
   );
