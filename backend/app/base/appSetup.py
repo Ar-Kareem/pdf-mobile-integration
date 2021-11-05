@@ -111,4 +111,4 @@ def setup_app():
     __setup_chron_jobs()
 
     init_db()
-    current_app.teardown_appcontext(close_db)
+    current_app.teardown_appcontext(lambda _: close_db())
