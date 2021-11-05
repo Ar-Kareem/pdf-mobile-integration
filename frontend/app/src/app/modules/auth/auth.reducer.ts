@@ -52,20 +52,14 @@ export const authReducer = createReducer(
 // SELECTORS
 
 export const authFeatureKey = 'authFeatureKey';
-const selectAuthState = createFeatureSelector<authState>(authFeatureKey);
+export const selectAuthState = createFeatureSelector<authState>(authFeatureKey);
 
-const selectUser = createSelector(
+export const selectUser = createSelector(
   selectAuthState,
   (state) => state.user
 );
 
-const selectHeaderVisibility = createSelector(
+export const selectHeaderVisibility = createSelector(
   selectAuthState,
   (state) => state.headerVisibility
 );
-
-export const authSelectors = {
-  selectAuthState,
-  selectUser,
-  selectHeaderVisibility,
-}

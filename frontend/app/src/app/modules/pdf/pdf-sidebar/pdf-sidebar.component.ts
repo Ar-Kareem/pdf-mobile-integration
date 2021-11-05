@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { authSelectors, menuButtonPressed } from '@modules/auth/auth.reducer';
+import { menuButtonPressed, selectAuthState } from '@modules/auth/auth.reducer';
 import { PdfService } from '@modules/pdf/pdf.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -28,7 +28,7 @@ export class PdfSidebarComponent implements OnInit {
   }
 
   private initStore() {
-    this.store.select(authSelectors.selectAuthState)
+    this.store.select(selectAuthState)
     .pipe(filter(state => state.action == menuButtonPressed.type))
     .subscribe(_ => this.display = !this.display)
 

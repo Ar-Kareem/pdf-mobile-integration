@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { authSelectors, toggleHeaderVisibility } from '@modules/auth/auth.reducer';
+import { selectHeaderVisibility, selectUser, toggleHeaderVisibility } from '@modules/auth/auth.reducer';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { getDefaultApplicationManifest, setGlobalApplicationManifest } from 'src/app/app.manifest';
 import { environment } from 'src/environments/environment';
-import { loadPdfFromUrl, pdfSelectors, setPdfLoadStatus, setPdfStorageId } from './pdf.reducer';
+import { loadPdfFromUrl, selectLoadedPdfUrl, setPdfLoadStatus, setPdfStorageId } from './pdf.reducer';
 import { PdfService } from './pdf.service';
 import { PdfStorageUtils } from './session/pdf-storage-utils';
 
@@ -63,13 +63,13 @@ export class PdfComponent implements OnInit, OnDestroy {
   }
 
   private initStore() {
-    this.store.select(authSelectors.selectHeaderVisibility)
+    this.store.select(selectHeaderVisibility)
     .pipe(takeUntil(this.destroyed$))
     .subscribe(status => {
       this.toolbarOpen = status;
     });
 
-    this.store.select(pdfSelectors.selectLoadedPdfUrl)
+    this.store.select(selectLoadedPdfUrl)
     .pipe(takeUntil(this.destroyed$))
     .subscribe(url => {
       if (url !== null) {
@@ -82,7 +82,7 @@ export class PdfComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.store.select(authSelectors.selectUser)
+    this.store.select(selectUser)
     .pipe(takeUntil(this.destroyed$))
     .subscribe(user => {
       if (!!user && !!this.pdf.available && !this.pdf.loaded) { // signed in user changed and pdf did not load

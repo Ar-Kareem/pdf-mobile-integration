@@ -3,10 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { User } from '@models/UserModel';
-import { authSelectors, fetchUserAttempted, logOutAttempted, menuButtonPressed } from '@modules/auth/auth.reducer';
+import { fetchUserAttempted, logOutAttempted, menuButtonPressed, selectHeaderVisibility, selectUser } from '@modules/auth/auth.reducer';
 import { AuthService } from '@modules/auth/auth.service';
-import { appSelectors } from 'src/app/app.reducer';
-import { pdfSelectors } from '@modules/pdf/pdf.reducer';
+import { selectPdfLoadstatus } from '@modules/pdf/pdf.reducer';
 
 @Component({
   selector: 'app-header',
@@ -28,20 +27,6 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.select(appSelectors.selectSessionId)
-    .subscribe((id) => {
-      console.log(id + 'ID');
-      if(!!id) {
-        let session = JSON.parse(localStorage.getItem('appSession-' + id) || '{}');
-        let c = Number(session['counter'] || 0)
-
-        this.testcounter = c++;
-        session['counter'] = c;
-
-        localStorage.setItem('appSession-' + id, JSON.stringify(session));
-      }
-    })
-
     this.activeRoute.queryParams.subscribe((qp) => {
       this.application_mode = !!qp.application;
     });
@@ -51,9 +36,9 @@ export class HeaderComponent implements OnInit {
 
   private initStore() {
     this.store.dispatch(fetchUserAttempted());
-    this.store.select(authSelectors.selectUser).subscribe(user => {this.user = user})
-    this.store.select(authSelectors.selectHeaderVisibility).subscribe(status => {this.headerVisibility = status})
-    this.store.select(pdfSelectors.selectPdfLoadstatus).subscribe(status => this.pdfLoadStatus = status);
+    this.store.select(selectUser).subscribe(user => {this.user = user})
+    this.store.select(selectHeaderVisibility).subscribe(status => {this.headerVisibility = status})
+    this.store.select(selectPdfLoadstatus).subscribe(status => this.pdfLoadStatus = status);
   }
 
   onMenuButtonPressed() {
