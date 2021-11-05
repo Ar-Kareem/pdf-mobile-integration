@@ -9,6 +9,10 @@
   <!-- <div>{{testcounter}}</div> -->
 
   <div class="spacer"></div>
+  <span *ngIf="pdfLoadStatus!==null">
+    {{pdfLoadStatus}}
+  </span>
+  <div class="spacer"></div>
 
   <p-button 
     label="" 

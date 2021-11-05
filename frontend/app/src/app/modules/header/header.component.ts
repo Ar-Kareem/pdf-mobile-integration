@@ -6,7 +6,7 @@ import { User } from '@models/UserModel';
 import { authActions, authSelectors } from '@modules/auth/auth.reducer';
 import { AuthService } from '@modules/auth/auth.service';
 import { appSelectors } from 'src/app/app.reducer';
-import { filter } from 'rxjs/operators';
+import { pdfSelectors } from '@modules/pdf/pdf.reducer';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   application_mode: boolean = false;
   headerVisibility = true;
   testcounter: number = 0;
+  pdfLoadStatus: string|null = null;
 
   constructor(
     private store: Store,
@@ -53,6 +54,7 @@ export class HeaderComponent implements OnInit {
     this.store.dispatch(authActions.fetchUserAttempted());
     this.store.select(authSelectors.selectUser).subscribe(user => {this.user = user})
     this.store.select(authSelectors.selectHeaderVisibility).subscribe(status => {this.headerVisibility = status})
+    this.store.select(pdfSelectors.selectPdfLoadstatus).subscribe(status => this.pdfLoadStatus = status);
   }
 
   onMenuButtonPressed() {
