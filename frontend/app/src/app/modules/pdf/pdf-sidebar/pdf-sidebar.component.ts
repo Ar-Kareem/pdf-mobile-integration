@@ -8,6 +8,7 @@ import { downloadPdfAttempted, downloadPdfSuccess, loadPdfFromUrl, selectPdfRequ
 import { environment } from 'src/environments/environment';
 import { panelMenuCommands } from '../pdf-panel-menu/pdf-panel-menu.const';
 import { PdfRequestModel } from '@models/PdfRequestModel';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pdf-sidebar',
@@ -34,6 +35,7 @@ export class PdfSidebarComponent implements OnInit {
     private actions$: Actions,
     private pdfService: PdfService,
     private changeDetectorRef: ChangeDetectorRef,
+    private titleService: Title,
   ) {
     if (!environment.production) {
       (window as any)['PdfSidebarComponent'] = this;
@@ -74,6 +76,10 @@ export class PdfSidebarComponent implements OnInit {
   private refreshSelectedPdfReq() {
     const reqObj = this.allPdfs.find(v => v.request_id === this.selectedPdfReqId);
     this.selectedPdfReq = !!reqObj ? reqObj : null;
+
+    if (this.selectedPdfReq) {
+      this.titleService.setTitle(this.selectedPdfReq.given_name);
+    }
   }
   
   allPdfs: PdfRequestModel[] = [];
