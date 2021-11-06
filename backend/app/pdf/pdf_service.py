@@ -65,5 +65,12 @@ def retreive(req: str):
     model = pdf_mapper.get_request(req)
     if not model:
         raise ServerError(publicMessage='Invalid Request Parameter')
-
     return model.result
+
+
+def set_request_name(req: str, new_name: str):
+    if not pdf_mapper.is_valid_request(req):
+        raise ServerError(publicMessage='Invalid Request Parameter')
+    if len(str(new_name)) > 128:
+        raise ServerError(publicMessage='Name is too long.')
+    pdf_mapper.set_request_name(req, new_name)

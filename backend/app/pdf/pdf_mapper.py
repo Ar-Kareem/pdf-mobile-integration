@@ -65,12 +65,13 @@ def get_request(req: str):
     model.result = result[6]
     return model
 
+
 def is_valid_request(req: str):
     db = get_db()
     result = db.execute(
         """
         SELECT
-            id
+            request_id
         FROM
             pdf
         WHERE
