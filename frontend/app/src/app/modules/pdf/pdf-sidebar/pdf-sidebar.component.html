@@ -1,45 +1,51 @@
 <p-sidebar [(visible)]="display" position="right">
     <div class="main-container">
-        <div class="inner-container">
-            <input type="PDF URL..." pInputText [(ngModel)]="pdfUrlLoad"/>0
-            <p-button class=".default-child" label="Load" (onClick)="onClickLoadPdfUrl()"></p-button>
+        <div class="inner-container child-left">
+            <span class="p-float-label">
+                <input pInputText style="height: 40px; width: 170px;" id="loadInputtext" [(ngModel)]="pdfUrlLoad"/>
+                <label for="loadInputtext">Load PDF URL...</label>
+            </span>
+            <button pButton style="width: 100px;" class="default-child" label="Load" (onClick)="onClickLoadPdfUrl()"></button>
         </div>
 
-        <div class="inner-container">
-            <input type="PDF URL..." pInputText [(ngModel)]="pdfUrlDownload"/>
-            <p-button class=".default-child" label="Download" (onClick)="onClickDownloadPdfUrl()"></p-button>
+        <div class="inner-container child-left">
+            <span class="p-float-label">
+                <input pInputText style="height: 40px; width: 170px;" id="downloadInputtext" [(ngModel)]="pdfUrlDownload"/>
+                <label for="downloadInputtext">Download PDF URL...</label>
+            </span>
+            <button pButton style="width: 100px;"class="default-child" label="Download" (onClick)="onClickDownloadPdfUrl()"></button>
         </div>
 
         <div class="inner-container" *ngFor="let pdf of validPdfs">
-            <p-button class=".default-child" label="{{pdf.percent}}%" (onClick)="onClickLoadedPdf(pdf)"></p-button>
+            <p-button class="default-child" label="{{pdf.percent}}%" (onClick)="onClickLoadedPdf(pdf)"></p-button>
         </div>
 
         <span>TEST A</span>
         <div class="inner-container">
-            <p-button label="1-1" class=".default-child"></p-button>
-            <p-button label="1-2" class=".default-child"></p-button>
-            <p-button label="1-3" class=".default-child"></p-button>
-            <p-button label="1-4" class=".default-child"></p-button>
-            <p-button label="1-5" class=".default-child"></p-button>
-            <p-button label="1-6" class=".default-child"></p-button>
+            <p-button label="1-1" class="default-child"></p-button>
+            <p-button label="1-2" class="default-child"></p-button>
+            <p-button label="1-3" class="default-child"></p-button>
+            <p-button label="1-4" class="default-child"></p-button>
+            <p-button label="1-5" class="default-child"></p-button>
+            <p-button label="1-6" class="default-child"></p-button>
         </div>
         <span>TEST B</span>
         <div class="inner-container">
-            <p-button label="2-1" class=".default-child"></p-button>
-            <p-button label="2-2" class=".default-child"></p-button>
-            <p-button label="2-3" class=".default-child"></p-button>
-            <p-button label="2-4" class=".default-child"></p-button>
-            <p-button label="2-5" class=".default-child"></p-button>
-            <p-button label="2-6" class=".default-child"></p-button>
+            <p-button label="2-1" class="default-child"></p-button>
+            <p-button label="2-2" class="default-child"></p-button>
+            <p-button label="2-3" class="default-child"></p-button>
+            <p-button label="2-4" class="default-child"></p-button>
+            <p-button label="2-5" class="default-child"></p-button>
+            <p-button label="2-6" class="default-child"></p-button>
         </div>
         <span>TEST C</span>
         <div class="inner-container">
-            <p-button label="3-1" class=".default-child"></p-button>
-            <p-button label="3-2" class=".default-child"></p-button>
-            <p-button label="3-3" class=".default-child"></p-button>
-            <p-button label="3-4" class=".default-child"></p-button>
-            <p-button label="3-5" class=".default-child"></p-button>
-            <p-button label="3-6" class=".default-child"></p-button>
+            <p-button label="3-1" class="default-child"></p-button>
+            <p-button label="3-2" class="default-child"></p-button>
+            <p-button label="3-3" class="default-child"></p-button>
+            <p-button label="3-4" class="default-child"></p-button>
+            <p-button label="3-5" class="default-child"></p-button>
+            <p-button label="3-6" class="default-child"></p-button>
         </div>
         <span>TEST A</span>
     </div>
