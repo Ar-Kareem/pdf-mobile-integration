@@ -1,8 +1,8 @@
 div.main-container {
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap; // default
-    // flex-flow: column nowrap; // shorthand of above two properties
+    // flex-direction: column;
+    // flex-wrap: nowrap; // default
+    flex-flow: column nowrap; // shorthand of above two properties
     justify-content: flex-start; // default
     align-items: stretch; // default - need to look into this more
     // align-content: flex-start; // not used with nowrap
@@ -23,4 +23,10 @@ div.inner-container {
     order: 0; // default 
     flex: 0 1 auto; // default - shorthand for flex-grow, flex-shrink, and flex-basis
     align-self: auto; // default - overwrides parent align-item if needed
+}
+
+.child-left {
+    order: 0; // default 
+    flex: 0 1 auto; // default - shorthand for flex-grow, flex-shrink, and flex-basis
+    align-self: flex-start; // overwrides parent align-item
 }
