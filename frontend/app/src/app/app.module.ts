@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
+import { InputTextModule } from 'primeng/inputtext';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -49,6 +50,7 @@ import { PdfPanelMenuComponent } from './modules/pdf/pdf-panel-menu/pdf-panel-me
     HttpClientModule,
     AppRoutingModule,
     ButtonModule,
+    InputTextModule,
     SidebarModule,
     PanelMenuModule,
     PdfViewerModule,
