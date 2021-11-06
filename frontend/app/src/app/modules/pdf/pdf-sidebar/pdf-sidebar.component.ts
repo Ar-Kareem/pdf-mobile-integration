@@ -4,7 +4,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import { menuButtonPressed } from '@modules/auth/auth.reducer';
-import { downloadPdfAttempted, downloadPdfSuccess, loadPdfFromUrl, selectPdfRequestId, setActiveReqId, setPdfNameAttempted, setPdfNameSuccess } from '@modules/pdf/pdf.reducer';
+import { downloadPdfAttempted, downloadPdfSuccess, loadPdfFromUrl, selectPdfRequest, setActiveReq, setAllReqs, setPdfNameAttempted, setPdfNameSuccess } from '@modules/pdf/pdf.reducer';
 import { environment } from 'src/environments/environment';
 import { panelMenuCommands } from '../pdf-panel-menu/pdf-panel-menu.const';
 import { PdfRequestModel } from '@models/PdfRequestModel';
@@ -62,9 +62,9 @@ export class PdfSidebarComponent implements OnInit {
       ofType(setPdfNameSuccess.type),
     ).subscribe(_ => this.keepLoading = true)
 
-    this.store.select(selectPdfRequestId)
+    this.store.select(selectPdfRequest)
     .subscribe(req => {
-      this.selectedPdfReqId = req;
+      this.selectedPdfReqId = req ? req.request_id : null;
       this.refreshSelectedPdfReq();
       if (this.editMenuVisible !== !!req) {
         this.editMenuVisible = !!req;
@@ -95,6 +95,7 @@ export class PdfSidebarComponent implements OnInit {
           pdf.percent = Math.floor(pdf.done/pdf.len * 100)
         })
         this.allPdfs = valid;
+        this.store.dispatch(setAllReqs({reqs: this.allPdfs}));
         this.refreshSelectedPdfReq();
         this.validPdfs = valid.filter(pdf => pdf.len);
       }
@@ -121,8 +122,8 @@ export class PdfSidebarComponent implements OnInit {
     }
   }
 
-  onClickLoadedPdf(pdf: any) {
-    this.store.dispatch(setActiveReqId({id: pdf.request_id}))
+  onClickLoadedPdf(pdf: PdfRequestModel) {
+    this.store.dispatch(setActiveReq({req: pdf}))
     this.store.dispatch(loadPdfFromUrl({url: '/api/pdf/retreive/' + pdf.request_id}));
   }
 

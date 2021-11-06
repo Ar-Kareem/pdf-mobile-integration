@@ -6,6 +6,7 @@ export class PdfStorageModel {
   public version: string = PdfStorageModel.SESSION_VERSION;
   public sessionId: string;
   public url: string|null = null;
+  public requestId: string|null = null;
   public page: string = '0';
 
   constructor(sessionId: string) {
