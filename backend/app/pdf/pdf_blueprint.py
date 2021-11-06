@@ -73,6 +73,20 @@ def progress():
     return {'result': result}
 
 
+@bp.route("set_req_name", methods=['POST'])
+@login_required
+def set_request_name():
+    if request.json is None:
+        return 'Request Format Error', 400
+    req = request.json['req']
+    name = request.json['name']
+    try:
+        pdf_service.set_request_name(req, name)
+    except ServerError as e:
+        return e.publicMessage, 201
+    return {}
+
+
 @bp.route("/retreive/<req>", methods=['GET'])
 @login_required
 def retreive(req: str):
