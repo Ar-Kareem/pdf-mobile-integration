@@ -4,7 +4,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import { menuButtonPressed } from '@modules/auth/auth.reducer';
-import { downloadPdfAttempted, downloadPdfSuccess, loadPdfFromUrl, selectPdfRequestId, setActiveReqId, setPdfNameAttempted } from '@modules/pdf/pdf.reducer';
+import { downloadPdfAttempted, downloadPdfSuccess, loadPdfFromUrl, selectPdfRequestId, setActiveReqId, setPdfNameAttempted, setPdfNameSuccess } from '@modules/pdf/pdf.reducer';
 import { environment } from 'src/environments/environment';
 import { panelMenuCommands } from '../pdf-panel-menu/pdf-panel-menu.const';
 import { PdfRequestModel } from '@models/PdfRequestModel';
@@ -55,11 +55,15 @@ export class PdfSidebarComponent implements OnInit {
       ofType(downloadPdfSuccess.type),
     ).subscribe(_ => this.keepLoading = true)
 
+    // If pdf set name success, then load requests to update the previously loded pdf name
+    this.actions$.pipe(
+      ofType(setPdfNameSuccess.type),
+    ).subscribe(_ => this.keepLoading = true)
+
     this.store.select(selectPdfRequestId)
     .subscribe(req => {
       this.selectedPdfReqId = req;
-      const reqObj = this.allPdfs.find(v => v.request_id === req)
-      this.selectedPdfReq = !!reqObj ? reqObj : null;
+      this.refreshSelectedPdfReq();
       if (this.editMenuVisible !== !!req) {
         this.editMenuVisible = !!req;
         this.changeDetectorRef.detectChanges();
@@ -67,6 +71,10 @@ export class PdfSidebarComponent implements OnInit {
     })
   }
 
+  private refreshSelectedPdfReq() {
+    const reqObj = this.allPdfs.find(v => v.request_id === this.selectedPdfReqId);
+    this.selectedPdfReq = !!reqObj ? reqObj : null;
+  }
   
   allPdfs: PdfRequestModel[] = [];
   validPdfs: PdfRequestModel[] = [];
@@ -81,6 +89,7 @@ export class PdfSidebarComponent implements OnInit {
           pdf.percent = Math.floor(pdf.done/pdf.len * 100)
         })
         this.allPdfs = valid;
+        this.refreshSelectedPdfReq();
         this.validPdfs = valid.filter(pdf => pdf.len);
       }
       console.log(result.result);
