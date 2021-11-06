@@ -149,7 +149,6 @@ export class PdfComponent implements OnInit, OnDestroy {
   }
 
   pdf_viewer_on_page_change(num: number){
-    console.log(num);
     if (!!this.sessId) {
       const session = PdfStorageUtils.getSessionFromStorage(this.sessId);
       session.page = num + '';
@@ -173,7 +172,6 @@ export class PdfComponent implements OnInit, OnDestroy {
   }
 
   pdf_viewer_after_load_complete(event: any) {
-    console.log('pdf_viewer_after_load_complete', event);
     this.store.dispatch(setPdfLoadStatus({status: null}))
     this.pdf.loaded = true;
     if (this.sessId) {
