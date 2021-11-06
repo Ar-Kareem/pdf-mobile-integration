@@ -99,6 +99,7 @@ export class PdfPanelMenuComponent implements OnInit, OnChanges {
   items = this.getMenuObject();
 
   constructor(
+    private actions$: Actions,
     private changeDetectorRef: ChangeDetectorRef,
 
   ) {}
@@ -106,6 +107,9 @@ export class PdfPanelMenuComponent implements OnInit, OnChanges {
     if (!environment.production) {
       (window as any)['PdfPanelMenuComponent'] = this;
     }
+    this.actions$.pipe(
+      ofType(menuButtonPressed.type),
+    ).subscribe(() => this.refresh())
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -114,6 +118,16 @@ export class PdfPanelMenuComponent implements OnInit, OnChanges {
       this.topLevelMenus.edit.visiblee = changes.editMenuVisible.currentValue;
     }
     this.items = this.getMenuObject();
+  }
+
+  /**
+   * Fix visual bugs where menus are expanded for no reason. refresh fixees that
+   */
+  refresh() {
+    this.items = []
+    this.changeDetectorRef.detectChanges();
+    this.items = this.getMenuObject();
+    this.changeDetectorRef.detectChanges();
   }
 
   getMenuObject() {
