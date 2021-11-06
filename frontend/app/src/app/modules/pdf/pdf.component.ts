@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { getDefaultApplicationManifest, setGlobalApplicationManifest } from 'src/app/app.manifest';
 import { environment } from 'src/environments/environment';
-import { loadPdfFromUrl, selectLoadedPdfUrl, setPdfLoadStatus, setPdfStorageId } from './pdf.reducer';
+import { loadPdfFromUrl, selectAllPdfRequests, selectLoadedPdfUrl, selectPdfRequest, setActiveReq, setPdfLoadStatus, setPdfStorageId } from './pdf.reducer';
 import { PdfService } from './pdf.service';
 import { PdfStorageUtils } from './session/pdf-storage-utils';
 
@@ -69,6 +69,7 @@ export class PdfComponent implements OnInit, OnDestroy {
       this.toolbarOpen = status;
     });
 
+    // Update browser session whenever loaded pdf url changes
     this.store.select(selectLoadedPdfUrl)
     .pipe(takeUntil(this.destroyed$))
     .subscribe(url => {
@@ -85,13 +86,41 @@ export class PdfComponent implements OnInit, OnDestroy {
       }
     });
 
+    // Update browser session whenever loaded pdf request id changes
+    this.store.select(selectPdfRequest)
+    .subscribe(req => {
+      if (!!req && !!this.sessId) {
+        const session = PdfStorageUtils.getSessionFromStorage(this.sessId);
+        if (session.requestId !== req.request_id) {
+          session.requestId = req.request_id;
+          PdfStorageUtils.setSessionToStorage(session);
+        }
+      }
+    })
+
+    // whenever signed in user changes and pdf is not loaded, will reload pdf
     this.store.select(selectUser)
     .pipe(takeUntil(this.destroyed$))
     .subscribe(user => {
-      if (!!user && !!this.pdf.available && !this.pdf.loaded) { // signed in user changed and pdf did not load
-        this.setPdfUrl(this.pdf.src); // reload pdf
+      if (!!user && !!this.pdf.available && !this.pdf.loaded) {
+        this.setPdfUrl(this.pdf.src);
       }
     })
+
+    // only perform this once (when list of pdf reqs load for the first time)
+    // will look for the request id stored in the session, if found will load
+    const sub = this.store.select(selectAllPdfRequests).subscribe(reqs => {
+      if (!!reqs) {
+        sub.unsubscribe();
+        this.sessId = PdfStorageUtils.getSessionIdAndSync(this.router, this.route);
+        const sess = PdfStorageUtils.getSessionFromStorage(this.sessId);
+        const reqObj = reqs.find(v => v.request_id === sess.requestId);
+        if (!!reqObj && !!sess.requestId) {
+          this.store.dispatch((setActiveReq({req: reqObj})));
+        }
+      }
+    })
+
   }
 
   onClickPdfViewer(event: MouseEvent) {

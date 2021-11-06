@@ -1,10 +1,8 @@
+import { PdfRequestModel } from '@models/PdfRequestModel';
 import { createAction, createFeatureSelector, createReducer, createSelector, on, props } from '@ngrx/store';
 
 
 // ACTIONS
-
-export const loadPdfFromUrl = createAction('[PDF Action] loadPdfFromUrl', props<{url: string}>());
-export const setPdfLoadStatus = createAction('[PDF Action] setPdfLoadStatus', props<{status: string|null}>());
 
 export const downloadPdfAttempted = createAction('[PDF Action] downloadPdfAttempted', props<{url: string}>());
 export const downloadPdfSuccess = createAction('[PDF Action] downloadPdfSuccess', props<{req: string}>());
@@ -14,7 +12,11 @@ export const setPdfNameAttempted = createAction('[PDF Action] setPdfNameAttempte
 export const setPdfNameSuccess = createAction('[PDF Action] setPdfNameSuccess');
 export const setPdfNameFailed = createAction('[PDF Action] setPdfNameFailed');
 
-export const setActiveReqId = createAction('[PDF Action] setActiveReqId', props<{id: string}>())
+export const setPdfLoadStatus = createAction('[PDF Action] setPdfLoadStatus', props<{status: string|null}>());
+
+export const loadPdfFromUrl = createAction('[PDF Action] loadPdfFromUrl', props<{url: string}>());
+export const setActiveReq = createAction('[PDF Action] setActiveReqId', props<{req: PdfRequestModel}>())
+export const setAllReqs = createAction('[PDF Action] setActiveReqId', props<{reqs: PdfRequestModel[]}>())
 export const setPdfStorageId = createAction('[PDF Action] setPdfStorageId', props<{id: string}>())
 
 
@@ -24,14 +26,16 @@ export type pdfState = {
   action: string|null,
   loadedPdfUrl: string|null,
   pdfLoadStatus: string|null,
-  pdfRequeseId: string|null,
+  pdfRequest: PdfRequestModel|null,
+  allPdfRequests: PdfRequestModel[]|null,
   pdfStorageId: string|null,
 }
 const initialState: pdfState = {
   action: null,
   loadedPdfUrl: null,
   pdfLoadStatus: null,
-  pdfRequeseId: null,
+  pdfRequest: null,
+  allPdfRequests: null,
   pdfStorageId: null,
 };
 
@@ -48,7 +52,8 @@ export const pdfReducer = createReducer(
   on(downloadPdfSuccess, (state) => ({...state, action: downloadPdfSuccess.type})),
   on(downloadPdfFailed, (state) => ({...state, action: downloadPdfFailed.type})),
 
-  on(setActiveReqId, (state, { id }) => ({...state, action: setActiveReqId.type, pdfRequeseId: id})),
+  on(setActiveReq, (state, { req }) => ({...state, action: setActiveReq.type, pdfRequest: req})),
+  on(setAllReqs, (state, { reqs }) => ({...state, action: setAllReqs.type, allPdfRequests: reqs})),
   on(setPdfStorageId, (state, { id }) => ({...state, action: setPdfStorageId.type, pdfStorageId: id})),
 );
 
@@ -73,9 +78,14 @@ export const selectHeaderVisibility = createSelector(
   (state) => state.loadedPdfUrl
 );
 
-export const selectPdfRequestId = createSelector(
+export const selectPdfRequest = createSelector(
   selectpdfState,
-  (state) => state.pdfRequeseId
+  (state) => state.pdfRequest
+);
+
+export const selectAllPdfRequests = createSelector(
+  selectpdfState,
+  (state) => state.allPdfRequests
 );
 
 export const selectPdfStorageId = createSelector(
