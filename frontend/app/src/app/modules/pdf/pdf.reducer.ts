@@ -10,6 +10,10 @@ export const downloadPdfAttempted = createAction('[PDF Action] downloadPdfAttemp
 export const downloadPdfSuccess = createAction('[PDF Action] downloadPdfSuccess', props<{req: string}>());
 export const downloadPdfFailed = createAction('[PDF Action] downloadPdfFailed');
 
+export const setPdfNameAttempted = createAction('[PDF Action] setPdfNameAttempted', props<{req: string, name: string}>());
+export const setPdfNameSuccess = createAction('[PDF Action] setPdfNameSuccess');
+export const setPdfNameFailed = createAction('[PDF Action] setPdfNameFailed');
+
 export const setActiveReqId = createAction('[PDF Action] setActiveReqId', props<{id: string}>())
 export const setPdfStorageId = createAction('[PDF Action] setPdfStorageId', props<{id: string}>())
 

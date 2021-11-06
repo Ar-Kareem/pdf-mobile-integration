@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
-import { downloadPdfAttempted, downloadPdfFailed, downloadPdfSuccess } from "./pdf.reducer";
+import { downloadPdfAttempted, downloadPdfFailed, downloadPdfSuccess, setPdfNameAttempted, setPdfNameFailed, setPdfNameSuccess } from "./pdf.reducer";
 import { PdfService } from "./pdf.service";
 
 
@@ -14,7 +14,7 @@ export class PdfEffects {
     private pdfService: PdfService
   ) {}
 
-  downloadPdf$ = createEffect(() => this.actions$.pipe(
+  downloadPdfAttempted$ = createEffect(() => this.actions$.pipe(
     ofType(downloadPdfAttempted),
     switchMap((action) => this.pdfService.create_request()
       .pipe(
@@ -29,6 +29,15 @@ export class PdfEffects {
         catchError(() => of(downloadPdfFailed())),
       ))
     )
+  ));
+
+  setPdfNameAttempted$ = createEffect(() => this.actions$.pipe(
+    ofType(setPdfNameAttempted),
+    switchMap((action) => this.pdfService.set_request_name(action.req, action.name)
+      .pipe(
+        map(() => setPdfNameSuccess()),
+        catchError(() => of(setPdfNameFailed())),
+      ))
   ));
 
 }

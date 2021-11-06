@@ -14,7 +14,7 @@
                 <input pInputText style="height: 40px; width: 220px;" id="loadInputtext" [(ngModel)]="pdfUrlLoad"/>
                 <label for="loadInputtext">Load PDF URL...</label>
             </span>
-            <button pButton class="default-child"  icon="fa-solid fa-eye" (onClick)="onClickLoadPdfUrl()"></button>
+            <p-button class="default-child"  icon="fa-solid fa-eye" (onClick)="onClickLoadPdfUrl()"></p-button>
         </div>
 
         <!-- DOWNLOAD PDF -->
@@ -23,7 +23,7 @@
                 <input pInputText style="height: 40px; width: 220px;" id="downloadInputtext" [(ngModel)]="pdfUrlDownload"/>
                 <label for="downloadInputtext">Download PDF URL...</label>
             </span>
-            <button pButton class="default-child" icon="fa-solid fa-download" (onClick)="onClickDownloadPdfUrl()"></button>
+            <p-button class="default-child" icon="fa-solid fa-download" (onClick)="onClickDownloadPdfUrl()"></p-button>
         </div>
 
         <!-- SET PDF NAME -->
@@ -36,20 +36,21 @@
             </div>
             <div class="row-container child-left" style="padding-top: 20px;">
                 <span class="p-float-label">
-                    <input pInputText style="height: 40px; width: 220px;" id="PDFNameInputtext" [(ngModel)]="pdfName"/>
+                    <input pInputText style="height: 40px; width: 220px;" type="text" id="PDFNameInputtext" [(ngModel)]="pdfName"/>
                     <label for="PDFNameInputtext">Set PDF Name...</label>
                 </span>
-                <button pButton class="default-child" icon="fa-solid fa-file-signature" (onClick)="onClickSetPdfName()"></button>
+                <p-button class="default-child" icon="fa-solid fa-file-signature" (onClick)="onClickSetPdfName()"></p-button>
             </div>
         </div>
 
         <!-- VIEW ALL PDF -->
-        <div *ngIf="panelMenuCommand === panelMenuCommands.allDownloadedPdf" class="col-container-left">
-            <div *ngFor="let pdf of validPdfs" class="default-child">
-                <p-button label="{{pdf.percent==100 ? 'Load' : pdf.percent+'%'}}" (onClick)="onClickLoadedPdf(pdf)"></p-button>
-                <span style="overflow-wrap: anywhere;">
-                    {{pdf.given_name}}
-                </span>
+        <div *ngIf="panelMenuCommand === panelMenuCommands.allDownloadedPdf" class="col-container-left-big-gap">
+            <div *ngFor="let pdf of validPdfs" class="default-child col-container-left">
+                <p-button label="{{pdf.percent==100 ? 'Load' : pdf.percent+'%'}}" class="default-child" (onClick)="onClickLoadedPdf(pdf)"></p-button>
+                <div class="default-child">
+                    <span style="font-weight: bold;">Title: </span>
+                    <span style="overflow-wrap: anywhere;">{{pdf.given_name}}</span>
+                </div>
             </div>
         </div>
 
