@@ -76,8 +76,11 @@ export class PdfComponent implements OnInit, OnDestroy {
         this.setPdfUrl(url);
         if (!!this.sessId) {
           const session = PdfStorageUtils.getSessionFromStorage(this.sessId);
-          session.url = url;
-          PdfStorageUtils.setSessionToStorage(session);
+          if (session.url !== url) { // pdf to load is different than pdf in session
+            session.url = url;
+            session.page = '0';
+            PdfStorageUtils.setSessionToStorage(session);
+          }
         }
       }
     });
@@ -161,7 +164,6 @@ export class PdfComponent implements OnInit, OnDestroy {
       this.store.dispatch(setPdfLoadStatus({status: status}))
     }
     this.pdf.loaded = false;
-    console.log('pdf_viewer_on_progress', event);
   }
 
   pdf_viewer_error(event: any) {
@@ -176,10 +178,8 @@ export class PdfComponent implements OnInit, OnDestroy {
     this.pdf.loaded = true;
     if (this.sessId) {
       const session = PdfStorageUtils.getSessionFromStorage(this.sessId);
-      console.log(session);
       setTimeout(() => {
         if (this.pdf.src == session.url && parseInt(session.page) > 0) {
-          console.log(session.page);
           this.pdf.page = parseInt(session.page)
         }
       }, 100);
