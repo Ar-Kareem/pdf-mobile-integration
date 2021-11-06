@@ -3,8 +3,8 @@ import { PdfService } from '@modules/pdf/pdf.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
-import { menuButtonPressed, selectAuthState } from '@modules/auth/auth.reducer';
-import { downloadPdfAttempted, downloadPdfSuccess, loadPdfFromUrl, selectPdfRequestId, setActiveReqId } from '@modules/pdf/pdf.reducer';
+import { menuButtonPressed } from '@modules/auth/auth.reducer';
+import { downloadPdfAttempted, downloadPdfSuccess, loadPdfFromUrl, selectPdfRequestId, setActiveReqId, setPdfNameAttempted } from '@modules/pdf/pdf.reducer';
 import { environment } from 'src/environments/environment';
 import { panelMenuCommands } from '../pdf-panel-menu/pdf-panel-menu.const';
 import { PdfRequestModel } from '@models/PdfRequestModel';
@@ -99,7 +99,11 @@ export class PdfSidebarComponent implements OnInit {
   }
 
   onClickSetPdfName() {
-
+    if (!!this.selectedPdfReq) {
+      this.store.dispatch(setPdfNameAttempted({req: this.selectedPdfReq.request_id, name: this.pdfName}))
+    } else {
+      console.error('No selected pdf request');
+    }
   }
 
   onClickLoadedPdf(pdf: any) {

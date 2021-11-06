@@ -14,6 +14,14 @@ div.col-container-left {
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: flex-start;
+    gap: 5px 100px;
+}
+
+div.col-container-left-big-gap {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
     gap: 25px 100px;
 }
 
