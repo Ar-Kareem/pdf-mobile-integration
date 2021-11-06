@@ -13,6 +13,7 @@ export class PdfService extends BaseService {
     download: this.PDF_API + 'download',
     progress: this.PDF_API + 'progress',
     retreive: this.PDF_API + 'retreive',
+    set_request_name: this.PDF_API + 'set_request_name',
   }
 
   constructor(private http: HttpClient) {
@@ -38,6 +39,10 @@ export class PdfService extends BaseService {
 
   retreive(req: string) {
     return this.http.get<any>(this.API.retreive + '/' + req, this.httpOptions)
+  }
+
+  set_request_name(req: string, name: string) {
+    return this.http.post<any>(this.API.set_request_name, {req, name}, this.httpOptions)
   }
 
 }

@@ -1,8 +1,15 @@
 <p-sidebar [(visible)]="display" position="right">
-    <div class="main-container">
+    <div class="col-container">
+
+        <app-pdf-panel-menu 
+            [editMenuVisible]="editMenuVisible"
+            (newMenuCommandEvent)="panelMenuCommand=$event"
+        ></app-pdf-panel-menu>
+
+        <div style="padding-top: 30px;"></div>
 
         <!-- LOAD PDF -->
-        <div class="inner-container child-left">
+        <div *ngIf="panelMenuCommand === panelMenuCommands.loadPdfUrl" class="row-container child-left">
             <span class="p-float-label">
                 <input pInputText style="height: 40px; width: 220px;" id="loadInputtext" [(ngModel)]="pdfUrlLoad"/>
                 <label for="loadInputtext">Load PDF URL...</label>
@@ -11,7 +18,7 @@
         </div>
 
         <!-- DOWNLOAD PDF -->
-        <div class="inner-container child-left">
+        <div *ngIf="panelMenuCommand === panelMenuCommands.downloadPdfUrl" class="row-container child-left">
             <span class="p-float-label">
                 <input pInputText style="height: 40px; width: 220px;" id="downloadInputtext" [(ngModel)]="pdfUrlDownload"/>
                 <label for="downloadInputtext">Download PDF URL...</label>
@@ -20,48 +27,31 @@
         </div>
 
         <!-- SET PDF NAME -->
-        <div class="inner-container child-left">
-            <span class="p-float-label">
-                <input pInputText style="height: 40px; width: 220px;" id="PDFNameInputtext" [(ngModel)]="pdfName"/>
-                <label for="PDFNameInputtext">Set PDF Name...</label>
-            </span>
-            <button pButton class="default-child" icon="fa-solid fa-file-signature" (onClick)="onClickSetPdfName()"></button>
+        <div *ngIf="panelMenuCommand === panelMenuCommands.setPdfName" class="col-container child-left">
+            <div class="child-left" style="font-weight: bold;">
+                PDF Name:
+            </div>
+            <div *ngIf="selectedPdfReq" class="child-left" style="overflow-wrap: anywhere;">
+                {{selectedPdfReq.given_name}}
+            </div>
+            <div class="row-container child-left" style="padding-top: 20px;">
+                <span class="p-float-label">
+                    <input pInputText style="height: 40px; width: 220px;" id="PDFNameInputtext" [(ngModel)]="pdfName"/>
+                    <label for="PDFNameInputtext">Set PDF Name...</label>
+                </span>
+                <button pButton class="default-child" icon="fa-solid fa-file-signature" (onClick)="onClickSetPdfName()"></button>
+            </div>
         </div>
 
-        <div class="inner-container" *ngFor="let pdf of validPdfs">
-            <p-button class="default-child" label="{{pdf.percent}}%" (onClick)="onClickLoadedPdf(pdf)"></p-button>
-            {{pdf.given_name}}
+        <!-- VIEW ALL PDF -->
+        <div *ngIf="panelMenuCommand === panelMenuCommands.allDownloadedPdf" class="col-container-left">
+            <div *ngFor="let pdf of validPdfs" class="default-child">
+                <p-button label="{{pdf.percent==100 ? 'Load' : pdf.percent+'%'}}" (onClick)="onClickLoadedPdf(pdf)"></p-button>
+                <span style="overflow-wrap: anywhere;">
+                    {{pdf.given_name}}
+                </span>
+            </div>
         </div>
 
-        <p-panelMenu #panelMenu class="default-child" [model]="items"></p-panelMenu>
-
-        <span>TEST A</span>
-        <div class="inner-container">
-            <p-button label="1-1" class="default-child"></p-button>
-            <p-button label="1-2" class="default-child"></p-button>
-            <p-button label="1-3" class="default-child"></p-button>
-            <p-button label="1-4" class="default-child"></p-button>
-            <p-button label="1-5" class="default-child"></p-button>
-            <p-button label="1-6" class="default-child"></p-button>
-        </div>
-        <span>TEST B</span>
-        <div class="inner-container">
-            <p-button label="2-1" class="default-child"></p-button>
-            <p-button label="2-2" class="default-child"></p-button>
-            <p-button label="2-3" class="default-child"></p-button>
-            <p-button label="2-4" class="default-child"></p-button>
-            <p-button label="2-5" class="default-child"></p-button>
-            <p-button label="2-6" class="default-child"></p-button>
-        </div>
-        <span>TEST C</span>
-        <div class="inner-container">
-            <p-button label="3-1" class="default-child"></p-button>
-            <p-button label="3-2" class="default-child"></p-button>
-            <p-button label="3-3" class="default-child"></p-button>
-            <p-button label="3-4" class="default-child"></p-button>
-            <p-button label="3-5" class="default-child"></p-button>
-            <p-button label="3-6" class="default-child"></p-button>
-        </div>
-        <span>TEST A</span>
     </div>
 </p-sidebar>
