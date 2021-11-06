@@ -22,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 import { pdfFeatureKey, pdfReducer } from '@modules/pdf/pdf.reducer';
 import { HttpErrorInterceptor } from '@services/HttpErrorInterceptor';
 import { PdfEffects } from '@modules/pdf/pdf.effects';
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { PdfEffects } from '@modules/pdf/pdf.effects';
     AppRoutingModule,
     ButtonModule,
     SidebarModule,
+    PanelMenuModule,
     PdfViewerModule,
   ],
   providers: [

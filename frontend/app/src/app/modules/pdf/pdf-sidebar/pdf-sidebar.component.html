@@ -1,24 +1,39 @@
 <p-sidebar [(visible)]="display" position="right">
     <div class="main-container">
+
+        <!-- LOAD PDF -->
         <div class="inner-container child-left">
             <span class="p-float-label">
-                <input pInputText style="height: 40px; width: 170px;" id="loadInputtext" [(ngModel)]="pdfUrlLoad"/>
+                <input pInputText style="height: 40px; width: 220px;" id="loadInputtext" [(ngModel)]="pdfUrlLoad"/>
                 <label for="loadInputtext">Load PDF URL...</label>
             </span>
-            <button pButton style="width: 100px;" class="default-child" label="Load" (onClick)="onClickLoadPdfUrl()"></button>
+            <button pButton class="default-child"  icon="fa-solid fa-eye" (onClick)="onClickLoadPdfUrl()"></button>
         </div>
 
+        <!-- DOWNLOAD PDF -->
         <div class="inner-container child-left">
             <span class="p-float-label">
-                <input pInputText style="height: 40px; width: 170px;" id="downloadInputtext" [(ngModel)]="pdfUrlDownload"/>
+                <input pInputText style="height: 40px; width: 220px;" id="downloadInputtext" [(ngModel)]="pdfUrlDownload"/>
                 <label for="downloadInputtext">Download PDF URL...</label>
             </span>
-            <button pButton style="width: 100px;"class="default-child" label="Download" (onClick)="onClickDownloadPdfUrl()"></button>
+            <button pButton class="default-child" icon="fa-solid fa-download" (onClick)="onClickDownloadPdfUrl()"></button>
+        </div>
+
+        <!-- SET PDF NAME -->
+        <div class="inner-container child-left">
+            <span class="p-float-label">
+                <input pInputText style="height: 40px; width: 220px;" id="PDFNameInputtext" [(ngModel)]="pdfName"/>
+                <label for="PDFNameInputtext">Set PDF Name...</label>
+            </span>
+            <button pButton class="default-child" icon="fa-solid fa-file-signature" (onClick)="onClickSetPdfName()"></button>
         </div>
 
         <div class="inner-container" *ngFor="let pdf of validPdfs">
             <p-button class="default-child" label="{{pdf.percent}}%" (onClick)="onClickLoadedPdf(pdf)"></p-button>
+            {{pdf.given_name}}
         </div>
+
+        <p-panelMenu #panelMenu class="default-child" [model]="items"></p-panelMenu>
 
         <span>TEST A</span>
         <div class="inner-container">
