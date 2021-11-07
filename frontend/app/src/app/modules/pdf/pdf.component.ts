@@ -123,13 +123,23 @@ export class PdfComponent implements OnInit, OnDestroy {
 
   }
 
-  onClickPdfViewer(event: MouseEvent) {
-    if (event.detail == 2) {
-      this.store.dispatch(toggleHeaderVisibility());
-    }
-    if (event.detail == 3) {
-      this.toggleFullScreen();
-    }
+  /**
+   * Unfortunately to detect double/triple click i cant simply look at the .detail value of the mouse event
+   * because while every good browser will properly set the .detail value (2 for double, 3 for triple)
+   * stupid safari (which means all apple devices) only set the .detail value to 1. So a manual implementation must be made
+   * which means that safari is also awful for accessibility purposes. Modern web browsers give the user the option to extend the window for double/triple clicks
+   * for accessibility purposes such that slower double/triple clicks will automatically work in all websites for those users that want it.
+   * However since safari is so terrible, it forces us to use a custom implementation to count the clicks in a timeframe (as the implementation below)
+   * which forces us to specify a fixed timeout (250 in this case) which cannot be adjusted by the users accessibility settings. 
+   */
+  tripleClickTimer: ReturnType<typeof setTimeout> = setTimeout(() => {}, 0);
+  tripleClickCounter: number = 0;
+  onClickPdfViewer() {
+    clearTimeout(this.tripleClickTimer);
+    this.tripleClickCounter++;
+    if(this.tripleClickCounter==2) this.store.dispatch(toggleHeaderVisibility());
+    if(this.tripleClickCounter==3) this.toggleFullScreen();
+    this.tripleClickTimer = setTimeout(() => {this.tripleClickCounter = 0}, 250);
   }
 
   /**
