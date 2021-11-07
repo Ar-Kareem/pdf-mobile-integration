@@ -15,8 +15,8 @@ export const setPdfNameFailed = createAction('[PDF Action] setPdfNameFailed');
 export const setPdfLoadStatus = createAction('[PDF Action] setPdfLoadStatus', props<{status: string|null}>());
 
 export const loadPdfFromUrl = createAction('[PDF Action] loadPdfFromUrl', props<{url: string}>());
-export const setActiveReq = createAction('[PDF Action] setActiveReqId', props<{req: PdfRequestModel}>())
-export const setAllReqs = createAction('[PDF Action] setActiveReqId', props<{reqs: PdfRequestModel[]}>())
+export const setActiveReq = createAction('[PDF Action] setActiveReq', props<{req: PdfRequestModel}>())
+export const setAllReqs = createAction('[PDF Action] setAllReqs', props<{reqs: PdfRequestModel[]}>())
 export const setPdfStorageId = createAction('[PDF Action] setPdfStorageId', props<{id: string}>())
 
 
