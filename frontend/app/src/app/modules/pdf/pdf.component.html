@@ -15,7 +15,7 @@
                 [original-size]="false"
                 [zoom-scale]="'page-width'"
                 (pageChange)="pdf_viewer_on_page_change($event)"
-                (click)="onClickPdfViewer($event)"
+                (click)="onClickPdfViewer()"
                 (on-progress)="pdf_viewer_on_progress($event)"
                 (error)="pdf_viewer_error($event)"
                 (after-load-complete)="pdf_viewer_after_load_complete($event)"
