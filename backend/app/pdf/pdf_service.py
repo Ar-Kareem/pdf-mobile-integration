@@ -2,6 +2,7 @@ import logging
 from typing import List
 from urllib import request
 import io
+import ssl
 
 from ..utils.ServerError import ServerError
 from . import pdf_mapper
@@ -27,7 +28,11 @@ def download(req: str, url: str):
 
     pdf_mapper.set_request_url(req, url)
 
-    with request.urlopen(url) as response:
+    # Ok to turn off here because we don't care about authenticity of url, users responsibility.
+    myssl = ssl.create_default_context()
+    myssl.check_hostname = False
+    myssl.verify_mode = ssl.CERT_NONE
+    with request.urlopen(url, context=myssl) as response:
         content_len = response.getheader('content-length')
         block_size = 1000000  # default value
 
